@@ -8,11 +8,14 @@ class Grid {
 public:
   Grid(int w, int h);
   Cell* get(int x, int y);
+  const Cell* get(int x, int y) const;
   Cell* randomCell();
-private:
+
   std::vector<Cell> cells;
   int w,h;
 
 };
+
+std::ostream& operator<<(std::ostream& os, const Grid& g);
 
 #endif /* !GRID_H_ */

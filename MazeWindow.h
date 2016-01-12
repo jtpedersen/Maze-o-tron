@@ -9,19 +9,21 @@ class MazeWindow : public QMainWindow
  public:
   MazeWindow();
 
-  /* private slots: */
-
  private:
+
   void init();
   void createActions();
   void setupToolBar();
+
+  void createMaze();
   
   QGraphicsScene *scene; 
   QGraphicsView *view;
   QToolBar *toolbar;
 
-
   QAction *newMaze;
+  
+  class Grid *grid;
 };
 
 #endif /* !MAZEWINDOW_H_ */

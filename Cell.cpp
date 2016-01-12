@@ -1,5 +1,7 @@
 #include "Cell.h"
 
+#include <iostream>
+
 Cell::Cell(int x, int y)
   : x_(x), y_(y) {
 }
@@ -14,25 +16,36 @@ bool Cell::operator<(const Cell &other) const {
   return y_ < other.y_;
 }
 
-void Cell::link(Cell& other) {
-  if (edges.find(other) != edges.end())
-    return;
-  edges.insert(other);
-  other.link(*this);
+bool Cell::linked(Cell* other) const {
+  if (!other) return false;
+  
+  return edges.find(other) != edges.cend();
 }
 
-void Cell::unlink(Cell& other) {
+void Cell::link(Cell* other) {
+  if (!other) return;
+  if (edges.find(other) != edges.end())
+    return;
+  
+  edges.insert(other);
+  //  std::cout << "link" << *this << " --- " << *other << std::endl;
+  other->link(this);
+
+}
+
+void Cell::unlink(Cell* other) {
+  if (!other) return;
   auto it = edges.find(other);
   if ( it == edges.end())
     return;
   edges.erase(it);
-  other.unlink(*this);
+  other->unlink(this);
 }
+
 
 std::vector<Cell*> Cell::neighbors() const {
   std::vector<Cell*> ls;
   Cell *ns[] = { N, E, S, W};
-
   for (auto n : ns) {
     if (n) {
       ls.push_back(n);
@@ -48,3 +61,7 @@ int Cell::y() const {
   return y_;
 }
 
+std::ostream& operator<<(std::ostream& os, const Cell& c) {
+  os << "Cell(" << c.x() << ", " << c.y() << ")";
+  return os;
+}

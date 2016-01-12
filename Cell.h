@@ -11,9 +11,11 @@ public:
   Cell(int x, int yxo);
   bool operator<(const Cell &other) const;
   size_t hash() const;
-  void link(Cell& other);
-  void unlink(Cell& other);
+  void link(Cell* other);
+  void unlink(Cell* other);
   std::vector<Cell*> neighbors() const;
+
+  bool linked(Cell* other) const;
 
   int x() const;
   int y() const;
@@ -22,13 +24,14 @@ public:
   Cell *E = nullptr;
   Cell *S = nullptr;
   Cell *W = nullptr;
-
+  
 private:
   int x_,y_; /*!< position */
-  std::set<Cell> edges;
-
+  std::set<Cell*> edges;
   
 };
+
+std::ostream& operator<<(std::ostream& os, const Cell& c);
 
 namespace std {
     template <>
