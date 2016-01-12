@@ -26,6 +26,10 @@ add_executable(mazer
 main.cpp
 MazeWindow.h
 MazeWindow.cpp
+Cell.h
+Cell.cpp
+Grid.h
+Grid.cpp
 ${resources_added}
 )
 
