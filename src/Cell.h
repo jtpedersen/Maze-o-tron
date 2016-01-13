@@ -7,8 +7,8 @@
 
 class Cell {
 public:
-
-  Cell(int x, int yxo);
+  Cell();
+  Cell(int x, int y);
   bool operator<(const Cell &other) const;
   size_t hash() const;
   void link(Cell* other);
@@ -24,6 +24,8 @@ public:
   Cell *E = nullptr;
   Cell *S = nullptr;
   Cell *W = nullptr;
+  
+  const std::set<Cell*>& viewEdges() const;
   
 private:
   int x_,y_; /*!< position */

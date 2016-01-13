@@ -2,6 +2,10 @@
 
 #include <iostream>
 
+Cell::Cell()
+  : x_(-1), y_(-1) {
+}
+
 Cell::Cell(int x, int y)
   : x_(x), y_(y) {
 }
@@ -59,6 +63,10 @@ int Cell::x() const {
 }
 int Cell::y() const {
   return y_;
+}
+
+const std::set<Cell*>& Cell::viewEdges() const {
+  return edges;
 }
 
 std::ostream& operator<<(std::ostream& os, const Cell& c) {
