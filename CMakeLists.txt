@@ -14,30 +14,9 @@ find_package(Qt5Core)
 find_package(Qt5Widgets)
 find_package(Qt5Gui)
 #find_package(Qt5OpenGL)
+ 
+add_subdirectory(src)
+add_subdirectory(gmock-1.7.0)
+enable_testing()
+add_subdirectory(test)
 
-#resources
-qt5_add_resources(
-  resources_added 
-  "icons.qrc")
-
-
-# Tell CMake to create the helloworld executable
-add_executable(mazer 
-main.cpp
-MazeWindow.h
-MazeWindow.cpp
-Cell.h
-Cell.cpp
-Grid.h
-Grid.cpp
-${resources_added}
-)
-
-qt5_use_modules(mazer Core Gui Widgets)
-
-# # Use the Widgets module from Qt 5.
-# target_link_libraries(helloworld 
-#   Qt5::Widgets
-#   Qt5::Core
-#   Qt5::Application
-#   )

@@ -15,7 +15,7 @@ Grid::Grid(int w, int h): w(w), h(h) {
     for (int i = 0; i < w; i++) {
       auto c = get(i,j);
       c->N = get(i,j-1);
-      c->E = get(i+1,j); 
+      c->E = get(i+1,j);
       c->S = get(i,j+1);
       c->W = get(i-1,j);
     }
@@ -40,9 +40,15 @@ const Cell* Grid::get(int x, int y) const {
   return c;
 }
 
-
 Cell* Grid::randomCell() {
   return & (*select_randomly(begin(cells), end(cells)));
+}
+
+int Grid::edgeCount() {
+  int cnt = 0;
+  for (auto c: cells)
+    cnt += c.viewEdges().size();
+  return cnt;
 }
 
 

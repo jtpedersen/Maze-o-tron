@@ -31,7 +31,6 @@ void MazeWindow::setupToolBar() {
   toolbar->addAction(newMaze);
 }
 
-
 static void binTree(Grid& grid) {
   
   auto NW = [] (const Cell& c) {
