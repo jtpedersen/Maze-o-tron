@@ -21,23 +21,8 @@ qt5_add_resources(
   "icons.qrc")
 
 
-# Tell CMake to create the helloworld executable
-add_executable(mazer 
-main.cpp
-MazeWindow.h
-MazeWindow.cpp
-Cell.h
-Cell.cpp
-Grid.h
-Grid.cpp
-${resources_added}
-)
+add_subdirectory(src)
+add_subdirectory(gmock-1.7.0)
+enable_testing()
+add_subdirectory(test)
 
-qt5_use_modules(mazer Core Gui Widgets)
-
-# # Use the Widgets module from Qt 5.
-# target_link_libraries(helloworld 
-#   Qt5::Widgets
-#   Qt5::Core
-#   Qt5::Application
-#   )
