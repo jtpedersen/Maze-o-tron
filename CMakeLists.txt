@@ -14,15 +14,8 @@ find_package(Qt5Core)
 find_package(Qt5Widgets)
 find_package(Qt5Gui)
 #find_package(Qt5OpenGL)
-
-#resources
-qt5_add_resources(
-  resources_added 
-  "icons.qrc")
-
-
+ 
 add_subdirectory(src)
 add_subdirectory(gmock-1.7.0)
 enable_testing()
 add_subdirectory(test)
-

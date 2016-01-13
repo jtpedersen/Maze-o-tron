@@ -11,7 +11,15 @@ MACRO(TESTCASE casename)
 ENDMACRO(TESTCASE)
 
 TESTCASE(
-  cell
+  cellTest
   cellTest
   ../src/Cell.cpp
+  )
+
+
+TESTCASE(
+  gridTest
+  gridTest
+  ../src/Cell.cpp
+  ../src/Grid.cpp
   )

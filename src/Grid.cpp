@@ -15,7 +15,7 @@ Grid::Grid(int w, int h): w(w), h(h) {
     for (int i = 0; i < w; i++) {
       auto c = get(i,j);
       c->N = get(i,j-1);
-      c->E = get(i+1,j);
+      c->E = get(i+1,j); 
       c->S = get(i,j+1);
       c->W = get(i-1,j);
     }

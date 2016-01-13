@@ -10,12 +10,14 @@ public:
   Cell* get(int x, int y);
   const Cell* get(int x, int y) const;
   Cell* randomCell();
-
   std::vector<Cell> cells;
+
+  int edgeCount();
   int w,h;
+  
+
 
 };
 
 std::ostream& operator<<(std::ostream& os, const Grid& g);
-
 #endif /* !GRID_H_ */
