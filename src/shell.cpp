@@ -15,15 +15,14 @@ static void binTree(Grid& grid) {
     return ls;
   };
 
-  for (auto c: grid.cells) {
-    auto nws = c.neighbors(); //NW(c);
-    for(auto nc: nws)
-      std::cout << nc << std::endl;
+  for (auto& c: grid.cells) {
+    auto nws = NW(c);
+    if (nws.empty()) continue;
     auto linkTo = *select_randomly(begin(nws), end(nws));
-    std::cout << "link" << c << " --- " << *linkTo << std::endl;
-    c.link(linkTo);
-    std::cout << grid.edgeCount() << "\n";
 
+    c.link(linkTo);
+    //    std::cout << "link " << c << " --- " << *linkTo << std::endl;
+    // std::cout << grid.edgeCount() << "\n";
     assert(c.linked(linkTo));
     assert(linkTo->linked(&c));
   }
@@ -31,12 +30,9 @@ static void binTree(Grid& grid) {
 
 int main(int argc, char *argv[]) {
  
-  Grid grid(3,3);
-  std::cout << "******************************************************************************************" << std::endl;
+  Grid grid(20,20);
   std::cout << grid << std::endl;
-  auto c = grid.get(1,1);
-  c->link( c->S);
-  //  binTree(grid);
+  binTree(grid);
   std::cout << grid << std::endl;
   return 0;
 }
