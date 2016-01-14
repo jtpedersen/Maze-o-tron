@@ -2,6 +2,7 @@
 #include "util.h"
 
 #include <iostream>
+#include <cassert>
 
 BinTreeMaker::BinTreeMaker(Grid grid)
   : grid(grid), idx(0) {
@@ -17,18 +18,29 @@ bool BinTreeMaker::isDone() const {
 }
 
 void BinTreeMaker::step() {
-  auto c = grid.get(idx++);
+  Cell *c = grid.get(idx++);
   std::vector<Cell*> ls;
   if (c->W)
     ls.push_back(c->W);
-  if (c->S)
-    ls.push_back(c->S);
+  if (c->N)
+    ls.push_back(c->N);
   
   if (ls.empty()) 
     return;
-  auto linkTo = *select_randomly(begin(ls), end(ls));
+  
+  Cell *linkTo = *select_randomly(begin(ls), end(ls));
   c->link(linkTo);
-  std::cout << idx  << "--" << ls.size() << " : " << *linkTo <<  "\n";
+  assert(grid.contains(c));
+  assert(grid.contains(c->N));
+  assert(grid.contains(c->W));
+  assert(grid.contains(linkTo));
+  assert( (linkTo == c->W) || (linkTo == c->N));
+  assert(c->linked(linkTo));
+  assert(linkTo->linked(c));
+
+  std::cout << idx  << "--" << ls.size() << "\n";
+  std::cout << "LINK:" << *c << " <--> " << *linkTo  << "\n";
+  grid.dumpEdges();
 }
 
 

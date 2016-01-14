@@ -3,16 +3,17 @@
 
 #include <cassert>
 #include <sstream>
+#include <iostream>
 
-Grid::Grid(int w, int h): w(w), h(h) {
-  for (int j = 0; j < h; j++) {
-    for (int i = 0; i < w; i++) {
+Grid::Grid(int w, int h): w_(w), h_(h) {
+  for (int j = 0; j < h_; j++) {
+    for (int i = 0; i < w_; i++) {
       cells.emplace_back( Cell{i,j} );
     }
   }
 
-  for (int j = 0; j < h; j++) {
-    for (int i = 0; i < w; i++) {
+  for (int j = 0; j < h_; j++) {
+    for (int i = 0; i < w_; i++) {
       auto c = get(i,j);
       c->N = get(i,j-1);
       c->E = get(i+1,j);
@@ -23,18 +24,18 @@ Grid::Grid(int w, int h): w(w), h(h) {
 }
 // TODO: c++ trick to const cast to same function
 Cell* Grid::get(int x, int y) {
-  if (x >=w || x < 0 || y >= h || y < 0)
+  if (x >=w_ || x < 0 || y >= h_ || y < 0)
     return nullptr;
-  auto c = get(y * w + x);
+  auto c = get(y * w_ + x);
   assert(c->x() == x);
   assert(c->y() == y);
   return c;
 }
 
 const Cell* Grid::get(int x, int y) const {
-  if (x >=w || x < 0 || y >= h || y < 0)
+  if (x >=w_ || x < 0 || y >= h_ || y < 0)
     return nullptr;
-  auto c = get(y * w + x);
+  auto c = get(y * w_ + x);
   assert(c->x() == x);
   assert(c->y() == y);
   return c;
@@ -60,29 +61,51 @@ Cell* Grid::randomCell() {
 int Grid::edgeCount() {
   int cnt = 0;
   for (auto c: cells)
-    cnt += c.viewEdges().size();
+    cnt += c.getEdges().size();
   return cnt;
 }
 
-int Grid::size() const {
-  return w*h;
+void Grid::dumpEdges() {
+  for (auto a: cells) {
+    std::cout << a << ":\n";
+    for (auto b : a.getEdges()) 
+      std::cout << "\t" << *b << "\n";
+  }
 }
 
+bool Grid::contains(const Cell* c) const {
+    for(auto& p: cells) {
+      auto *ptr = &p;
+      if (ptr == c)
+	return true;
+    }
+    return false;
+}
+
+int Grid::size() const {
+  return w_*h_;
+}
+int Grid::w() const {
+  return w_;
+}
+int Grid::h() const {
+  return h_;
+}
 
 std::ostream& operator<<(std::ostream& os, const Grid& g) {
   std::stringstream ss;
   ss << "+";
-  for (int i = 0; i < g.w; i++) {
+  for (int i = 0; i < g.w(); i++) {
     ss << "---+";
   }
   os << ss.str() << std::endl;
 
-  for (int j = 0; j < g.h; j++) {
+  for (int j = 0; j < g.h(); j++) {
     std::stringstream top;
     std::stringstream bottom;
     top << "|";
     bottom << "+";
-    for (int i = 0; i < g.w; i++) {
+    for (int i = 0; i < g.w(); i++) {
       auto c = g.get(i, j);
       top << "   " << ( c->linked(c->E) ? " " : "|");
       bottom << ( c->linked(c->S) ? "   " : "---") << "+";

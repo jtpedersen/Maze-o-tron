@@ -11,7 +11,9 @@ Cell::Cell(int x, int y)
 }
 
 size_t Cell::hash() const {
-  return static_cast<size_t>(y_) << 32 | static_cast<size_t>(x_);
+  auto h = static_cast<size_t>(y_) << 32 | static_cast<size_t>(x_);
+  std::cout << h  << "\n";
+  return h;
 }
 
 bool Cell::operator<(const Cell &other) const {
@@ -27,12 +29,11 @@ bool Cell::linked(Cell* other) const {
 }
 
 void Cell::link(Cell* other) {
-  if (!other) return;
-  if (edges.find(other) != edges.end())
+  if (linked(other))
     return;
   
   edges.insert(other);
-  //  std::cout << "link" << *this << " --- " << *other << std::endl;
+  //std::cout << "link" << *this << this << " --- " << *other << other << std::endl;
   other->link(this);
 
 }
@@ -65,7 +66,7 @@ int Cell::y() const {
   return y_;
 }
 
-const std::set<Cell*>& Cell::viewEdges() const {
+const std::set<Cell*>& Cell::getEdges() const {
   return edges;
 }
 

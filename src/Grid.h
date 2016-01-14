@@ -18,14 +18,18 @@ public:
   Cell* randomCell();
 
   int size() const;
+  int w() const;
+  int h() const;
+
   std::vector<Cell> cells;
 
   int edgeCount();
-  int w,h;
+  void dumpEdges();
 
+  bool contains(const Cell* c) const;
 
-  
-
+ private:
+  int w_,h_;
 
 };
 

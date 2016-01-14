@@ -4,6 +4,8 @@
 #include <Cell.h>
 #include <Grid.h>
 
+#include <algorithm>
+
 TEST(grid, basic) {
   Grid g(2,2);
 }
@@ -34,7 +36,7 @@ TEST(grid, basicStructure) {
   EXPECT_EQ(b->N, g.get(1,0));
 }
 
-TEST(gridd, edgeCount) {
+TEST(grid, edgeCount) {
   Grid g(3,3);
   EXPECT_EQ(0, g.edgeCount());
 
@@ -42,7 +44,54 @@ TEST(gridd, edgeCount) {
   EXPECT_EQ(2, g.edgeCount());
 }
 
+TEST(grid, directionLinks) {
+  Grid g(3,3);
+  auto center = g.get(1,1);
+  center->link( center->E);
+  EXPECT_TRUE( center->linked( center->E));
+  EXPECT_TRUE( center->E->linked( center));
+}
+
+TEST(grid, directionLinksW) {
+  Grid g(3,3);
+  auto center = g.get(1,1);
+  center->link( center->W);
+  EXPECT_TRUE( center->linked( center->W));
+  EXPECT_TRUE( center->W->linked( center));
+}
+
+TEST(grid, directionLinksS) {
+  Grid g(3,3);
+  auto center = g.get(1,1);
+  center->link( center->S);
+  EXPECT_TRUE( center->linked( center->S));
+  EXPECT_TRUE( center->S->linked( center));
+}
+
+TEST(grid, directionLinksN) {
+  Grid g(3,3);
+  auto center = g.get(1,1);
+  center->link( center->N);
+  EXPECT_TRUE( center->linked( center->N));
+  EXPECT_TRUE( center->N->linked( center));
+}
+
+TEST(grid, allInThere) {
+  Grid grid(3,3);
+
+  EXPECT_FALSE(grid.contains((Cell*) 42));
+  
+  for(auto& c: grid.cells) {
+    Cell* dirs[] = {c.N, c.E, c.S, c.W};
+    for(auto d: dirs) {
+      if (!d)
+	continue;
+      EXPECT_TRUE( grid.contains(d));
+    }
+  }
+  
+}
 int main(int argc, char** argv) { 
-    testing::InitGoogleTest(&argc, argv); 
-    return RUN_ALL_TESTS(); 
+  testing::InitGoogleTest(&argc, argv); 
+  return RUN_ALL_TESTS(); 
 }

@@ -25,7 +25,7 @@ public:
   Cell *S = nullptr;
   Cell *W = nullptr;
   
-  const std::set<Cell*>& viewEdges() const;
+  const std::set<Cell*>& getEdges() const;
   
 private:
   int x_,y_; /*!< position */
