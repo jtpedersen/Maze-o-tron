@@ -1,5 +1,6 @@
 #include "MazeWindow.h"
 #include "Grid.h"
+#include "BinTreeMaker.h"
 #include "util.h"
 
 #include <iterator>
@@ -31,35 +32,12 @@ void MazeWindow::setupToolBar() {
   toolbar->addAction(newMaze);
 }
 
-
-static void binTree(Grid& grid) {
-  
-  auto NW = [] (const Cell& c) {
-    std::vector<Cell*> ls;
-    Cell *ns[] = { c.N, c.E};
-    for (auto n : ns) {
-      if (n) {
-	ls.push_back(n);
-      }
-      return ls;
-    }
-  };
-
-  for (auto c: grid.cells) {
-    auto nws = NW(c);
-    if (nws.size() < 1)
-      continue;
-    auto linkTo = *select_randomly(begin(nws), end(nws));
-    //    std::cout << "link" << c << " --- " << *linkTo << std::endl;
-    c.link(linkTo);
-  }
-}
-
 void MazeWindow::createMaze() {
-  grid = new Grid(20,20);
-
-  std::cout << *grid << std::endl;
-  binTree(*grid);
-  std::cout << *grid << std::endl;
+  Grid grid(20,20);
+  BinTreeMaker maker(grid);
+  while(!maker.isDone()) {
+    maker.step();
+    std::cout << maker.getGrid() << std::endl;
+  }
 
 }

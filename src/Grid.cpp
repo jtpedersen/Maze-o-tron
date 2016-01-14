@@ -25,7 +25,7 @@ Grid::Grid(int w, int h): w(w), h(h) {
 Cell* Grid::get(int x, int y) {
   if (x >=w || x < 0 || y >= h || y < 0)
     return nullptr;
-  auto* c = & (cells[y*w+x]);
+  auto c = get(y * w + x);
   assert(c->x() == x);
   assert(c->y() == y);
   return c;
@@ -34,11 +34,24 @@ Cell* Grid::get(int x, int y) {
 const Cell* Grid::get(int x, int y) const {
   if (x >=w || x < 0 || y >= h || y < 0)
     return nullptr;
-  auto* c = & (cells[y*w+x]);
+  auto c = get(y * w + x);
   assert(c->x() == x);
   assert(c->y() == y);
   return c;
 }
+
+Cell* Grid::get(int idx) {
+  assert(idx>=0);
+  assert(idx < size());
+  return & (cells[idx]);
+}
+
+const Cell* Grid::get(int idx) const {
+  assert(idx>=0);
+  assert(idx < size());
+  return & (cells[idx]);
+}
+
 
 Cell* Grid::randomCell() {
   return & (*select_randomly(begin(cells), end(cells)));
@@ -49,6 +62,10 @@ int Grid::edgeCount() {
   for (auto c: cells)
     cnt += c.viewEdges().size();
   return cnt;
+}
+
+int Grid::size() const {
+  return w*h;
 }
 
 

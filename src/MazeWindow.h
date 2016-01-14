@@ -23,7 +23,6 @@ class MazeWindow : public QMainWindow
 
   QAction *newMaze;
   
-  class Grid *grid;
 };
 
 #endif /* !MAZEWINDOW_H_ */
