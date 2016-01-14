@@ -2,13 +2,14 @@
 
 #include <iostream>
 
-Cell::Cell()
-  : x_(-1), y_(-1) {
+Cell::Cell(const Grid& grid, int x, int y)
+  : grid(grid), idx_(grid.idx(x,y)), x_(x), y_(y) {
 }
 
-Cell::Cell(int x, int y)
-  : x_(x), y_(y) {
+Cell::Cell(Grid& grid)
+  : Cell(grid, -1, -1) {
 }
+
 
 size_t Cell::hash() const {
   auto h = static_cast<size_t>(y_) << 32 | static_cast<size_t>(x_);
@@ -22,23 +23,22 @@ bool Cell::operator<(const Cell &other) const {
   return y_ < other.y_;
 }
 
-bool Cell::linked(Cell* other) const {
-  if (!other) return false;
-  
+bool Cell::linked(int other) const {
+  if (other < 0) return false;
   return edges.find(other) != edges.cend();
 }
 
-void Cell::link(Cell* other) {
+void Cell::link(int other) {
   if (linked(other))
     return;
   
   edges.insert(other);
   //std::cout << "link" << *this << this << " --- " << *other << other << std::endl;
-  other->link(this);
+  other->link(_idx);
 
 }
 
-void Cell::unlink(Cell* other) {
+void Cell::unlink(int other) {
   if (!other) return;
   auto it = edges.find(other);
   if ( it == edges.end())
