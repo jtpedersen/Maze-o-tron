@@ -2,13 +2,21 @@
 #include "gmock/gmock.h"
 
 #include <Cell.h>
+#include <Grid.h>
 
-// TEST(cell, lt) {
-//   Cell a(0,0);
-//   Cell b(1,1);
+class CellTest : public ::testing::Test {
+public:
+  CellTest() {
+    grid = Grid(3,3);
+  }
 
-//   EXPECT_LT(a,b) << a << "<" << b;
-// }
+public:
+  Grid grid;
+};
+
+TEST_F(CellTest, instantiate) {
+  Cell c(grid,0,0);
+}
 
 // TEST(cell, noLink) {
 //   Cell a(0,0);

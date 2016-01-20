@@ -2,6 +2,7 @@
 #define GRID_H_
 
 #include <map>
+#include <set>
 #include <vector>
 
 class Cell;
@@ -10,6 +11,7 @@ class Grid {
 
 public:
   Grid(int w, int h);
+  Grid();
 
   Cell* get(const int idx);
   const Cell* get(const int idx) const;
@@ -36,7 +38,7 @@ public:
  private:
   int w_,h_;
   std::vector<Cell> cells;
-  std::multimap<int, int> edges;
+  std::map<int, std::set<int>> edges;
 };
 
 

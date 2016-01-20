@@ -15,6 +15,11 @@ Grid::Grid(int w, int h): w_(w), h_(h) {
   }
 }
 
+Grid::Grid() 
+  : Grid::Grid(0,0) {
+
+}
+
 Cell* Grid::get(const int idx)  {
   if (idx < 0 || idx >= size())
     return nullptr;
@@ -68,13 +73,17 @@ int Grid::idx(const int x, const int y) const {
 }
 
 void Grid::addEdge(const int a, const int b) {
-  
+  edges[a].insert(b);
 }
 void Grid::removeEdge(const int a, const int b) {
 
 }
 bool Grid::linked(const int a, const int b) const {
-  return false;
+  auto it = edges.find(a);
+  if (it == edges.end())
+    return false;
+  auto out = (*it).second;
+  return out.count(b) > 0;
 }
 
 
