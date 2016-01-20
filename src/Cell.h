@@ -9,15 +9,18 @@
 
 class Cell {
 public:
-  Cell(const Grid&);
-  Cell(const Grid&, int x, int y);
+  Cell(Grid&, int x, int y);
   bool operator<(const Cell &other) const;
 
   std::vector<int> neighbors() const;
 
   int idx() const;
-  /// when contucted without an id it is invalid, id < 0
   bool valid() const;
+  
+  /* conviniece to access the edges in Grid */
+  bool linked(const int other) const;
+  void link(const int other);
+  void unlink(const int other);
   
   /* specific for rectangular grid */
   int x() const;
@@ -27,12 +30,10 @@ public:
   int E = -1;
   int S = -1;
   int W = -1;
-  
-  
+
 private:
-  int x_,y_; /*!< position in rectangular grid*/
-  int idx_; /*!< index in grid, used for edges */
   Grid& grid;
+  int x_,y_; /*!< position in rectangular grid*/
 };
 
 std::ostream& operator<<(std::ostream& os, const Cell& c);

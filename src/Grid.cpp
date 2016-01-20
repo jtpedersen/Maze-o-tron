@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include "Cell.h"
 #include "util.h"
 
 #include <cassert>
@@ -6,50 +7,24 @@
 #include <iostream>
 
 Grid::Grid(int w, int h): w_(w), h_(h) {
-  for (int j = 0; j < h_; j++) {
-    for (int i = 0; i < w_; i++) {
-      cells.emplace_back( Cell{i,j} );
-    }
-  }
 
   for (int j = 0; j < h_; j++) {
     for (int i = 0; i < w_; i++) {
-      auto c = get(i,j);
-      c->N = get(i,j-1);
-      c->E = get(i+1,j);
-      c->S = get(i,j+1);
-      c->W = get(i-1,j);
+      cells.emplace_back( Cell{*this, i,j} );
     }
   }
 }
-// TODO: c++ trick to const cast to same function
-Cell* Grid::get(int x, int y) {
-  if (x >=w_ || x < 0 || y >= h_ || y < 0)
-    return nullptr;
-  auto c = get(y * w_ + x);
-  assert(c->x() == x);
-  assert(c->y() == y);
-  return c;
-}
 
-const Cell* Grid::get(int x, int y) const {
-  if (x >=w_ || x < 0 || y >= h_ || y < 0)
+Cell* Grid::get(const int idx)  {
+  if (idx < 0 || idx >= size())
     return nullptr;
-  auto c = get(y * w_ + x);
-  assert(c->x() == x);
-  assert(c->y() == y);
-  return c;
-}
-
-Cell* Grid::get(int idx) {
-  assert(idx>=0);
-  assert(idx < size());
   return & (cells[idx]);
 }
 
-const Cell* Grid::get(int idx) const {
-  assert(idx>=0);
-  assert(idx < size());
+
+const Cell* Grid::get(const int idx) const {
+  if (idx < 0 || idx >= size())
+    return nullptr;
   return & (cells[idx]);
 }
 
@@ -60,26 +35,22 @@ Cell* Grid::randomCell() {
 
 int Grid::edgeCount() {
   int cnt = 0;
-  for (auto c: cells)
-    cnt += c.getEdges().size();
   return cnt;
 }
 
 void Grid::dumpEdges() {
-  for (auto a: cells) {
-    std::cout << a << ":\n";
-    for (auto b : a.getEdges()) 
-      std::cout << "\t" << *b << "\n";
-  }
+  // for (auto a: cells) {
+  //   std::cout << a << ":\n";
+  //   for (auto b : a.getEdges()) 
+  //     std::cout << "\t" << *b << "\n";
+  // }
 }
 
-bool Grid::contains(const Cell* c) const {
-    for(auto& p: cells) {
-      auto *ptr = &p;
-      if (ptr == c)
-	return true;
-    }
+bool Grid::contains(const int idx) const {
+  if (idx < 0 || idx >= size())
     return false;
+  return cells[idx].valid();
+
 }
 
 int Grid::size() const {
@@ -91,6 +62,22 @@ int Grid::w() const {
 int Grid::h() const {
   return h_;
 }
+
+int Grid::idx(const int x, const int y) const {
+  return y * w_ + x;
+}
+
+void Grid::addEdge(const int a, const int b) {
+  
+}
+void Grid::removeEdge(const int a, const int b) {
+
+}
+bool Grid::linked(const int a, const int b) const {
+  return false;
+}
+
+
 
 std::ostream& operator<<(std::ostream& os, const Grid& g) {
   std::stringstream ss;
@@ -106,7 +93,8 @@ std::ostream& operator<<(std::ostream& os, const Grid& g) {
     top << "|";
     bottom << "+";
     for (int i = 0; i < g.w(); i++) {
-      auto c = g.get(i, j);
+      auto idx = g.idx(i, j);
+      auto c = g.get( idx);
       top << "   " << ( c->linked(c->E) ? " " : "|");
       bottom << ( c->linked(c->S) ? "   " : "---") << "+";
     }
