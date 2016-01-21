@@ -10,8 +10,7 @@ class Grid;
 class Cell {
 public:
   Cell(Grid* g, int x, int y);
-  Cell(Grid g, int x, int y);
-  ///  Cell(const Cell& o);
+
   bool operator<(const Cell &other) const;
 
   std::vector<int> neighbors() const;

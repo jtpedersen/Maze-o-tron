@@ -16,15 +16,6 @@ Cell::Cell(Grid* grid, int x, int y)
     W = grid->idx(x-1, y);
 }
 
-Cell::Cell(Grid grid, int x, int y) 
-  : Cell::Cell(&grid, x, y) {
-
-}
-
-// Cell::Cell(const Cell& o) {
-
-// }
-
 int Cell::idx() const{
   return grid->idx(x_, y_);
 }
