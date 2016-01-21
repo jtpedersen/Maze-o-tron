@@ -74,6 +74,15 @@ TEST(grid, edgeCount) {
 
   g.get(1,1)->link( g.idx(0,1) );
   EXPECT_EQ(2, g.edgeCount());
+
+  g.dumpEdges();
+}
+
+TEST(grid, contains) {
+  Grid grid(3,3);
+  for(int i = 0; i < grid.size(); i++) {
+    EXPECT_TRUE( grid.contains(i));
+  }
 }
 
 

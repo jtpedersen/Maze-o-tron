@@ -1,28 +1,40 @@
 #include "Cell.h"
+#include "Grid.h"
 
 #include <iostream>
 
-Cell::Cell(Grid& grid, int x, int y)
+Cell::Cell(Grid* grid, int x, int y)
   : grid(grid), x_(x), y_(y) {
 
   if (y > 0)
-    N = grid.idx(x, y-1);
-  if (x < grid.w() - 1)
-    E = grid.idx(x+1, y);
-  if (y < grid.h() -1)
-    S = grid.idx(x, y+1);
+    N = grid->idx(x, y-1);
+  if (x < grid->w() - 1)
+    E = grid->idx(x+1, y);
+  if (y < grid->h() -1)
+    S = grid->idx(x, y+1);
   if ( x_ > 0)
-    W = grid.idx(x-1, y);
+    W = grid->idx(x-1, y);
 }
 
+Cell::Cell(Grid grid, int x, int y) 
+  : Cell::Cell(&grid, x, y) {
+
+}
+
+// Cell::Cell(const Cell& o) {
+
+// }
+
 int Cell::idx() const{
-  return grid.idx(x_, y_);
+  return grid->idx(x_, y_);
 }
 bool Cell::valid() const{
   return x_ >=0 && y_ >= 0;
 }
 
-
+void Cell::setGrid(Grid* g) {
+  this->grid = g;
+}
 // size_t Cell::hash() const {
 //   auto h = static_cast<size_t>(y_) << 32 | static_cast<size_t>(x_);
 //   std::cout << h  << "\n";
@@ -36,17 +48,17 @@ bool Cell::operator<(const Cell &other) const {
 }
 
 bool Cell::linked(const int other) const {
-  return grid.linked(idx(), other);
+  return grid->linked(idx(), other);
 }
 
 void Cell::link(const int other) {
-  grid.addEdge(idx(), other);
-  grid.addEdge(other, idx());
+  grid->addEdge(idx(), other);
+  grid->addEdge(other, idx());
 }
 
 void Cell::unlink(int other) {
-  grid.removeEdge(idx(), other);
-  grid.removeEdge(other, idx());
+  grid->removeEdge(idx(), other);
+  grid->removeEdge(other, idx());
 }
 
 

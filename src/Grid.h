@@ -11,6 +11,7 @@ class Grid {
 
 public:
   Grid(int w, int h);
+  Grid(const Grid&);
   Grid();
 
   Cell* get(const int idx);
@@ -41,7 +42,6 @@ public:
   std::vector<Cell> cells;
   std::map<int, std::set<int>> edges;
 };
-
 
 std::ostream& operator<<(std::ostream& os, const Grid& g);
 #endif /* !GRID_H_ */

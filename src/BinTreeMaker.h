@@ -6,7 +6,7 @@
 
 class BinTreeMaker : public Maker {
 public:
-  explicit BinTreeMaker(Grid);
+  explicit BinTreeMaker(const Grid&);
   /// return the grid such that it can be rendered
   virtual const Grid& getGrid() const;
   /// take one step with whe algorithm

@@ -9,7 +9,7 @@
 Grid::Grid(int w, int h): w_(w), h_(h) {
   for (int j = 0; j < h_; j++) {
     for (int i = 0; i < w_; i++) {
-      cells.emplace_back( Cell{*this, i,j} );
+      cells.emplace_back( Cell{this, i,j} );
     }
   }
 }
@@ -17,6 +17,15 @@ Grid::Grid(int w, int h): w_(w), h_(h) {
 Grid::Grid() 
   : Grid::Grid(0,0) {
 
+}
+
+Grid::Grid(const Grid& o) {
+  w_ = o.w();
+  h_ = o.h();
+  cells = o.cells;
+  for(auto& c: cells) {
+    c.setGrid(this);
+  }
 }
 
 Cell* Grid::get(const int idx)  {
@@ -47,11 +56,11 @@ int Grid::edgeCount() {
 }
 
 void Grid::dumpEdges() {
-  // for (auto a: cells) {
-  //   std::cout << a << ":\n";
-  //   for (auto b : a.getEdges()) 
-  //     std::cout << "\t" << *b << "\n";
-  // }
+  for(auto& e: edges) {
+    std::cout << e.first << "->\n";
+    for (auto& v :(e.second))
+      std::cout << "\t" << v << std::endl;
+  }
 }
 
 bool Grid::contains(const int idx) const {
