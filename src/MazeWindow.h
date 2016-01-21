@@ -2,12 +2,15 @@
 #define MAZEWINDOW_H_
 
 #include <QtWidgets>
+class Grid;
 
 class MazeWindow : public QMainWindow
 {
   Q_OBJECT
  public:
   MazeWindow();
+
+  void drawMaze(const Grid& grid);
 
  private:
 

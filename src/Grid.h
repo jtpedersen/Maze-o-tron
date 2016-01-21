@@ -17,6 +17,7 @@ public:
   Cell* get(const int idx);
   Cell* get(const int x, const int y);
   const Cell* get(const int idx) const;
+  const std::vector<Cell>& getCells() const;
   
   Cell* randomCell();
 
@@ -35,7 +36,6 @@ public:
   int w() const;
   int h() const;
 
-  
   friend std::ostream& operator<<(std::ostream& os, const Grid& g);
  private:
   int w_,h_;

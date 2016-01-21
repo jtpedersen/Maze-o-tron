@@ -16,7 +16,6 @@ Grid::Grid(int w, int h): w_(w), h_(h) {
 
 Grid::Grid() 
   : Grid::Grid(0,0) {
-
 }
 
 Grid::Grid(const Grid& o) {
@@ -42,6 +41,10 @@ const Cell* Grid::get(const int idx) const {
 
 Cell* Grid::get(const int x, const int y) {
   return get(idx(x,y));
+}
+
+const std::vector<Cell>& Grid::getCells() const {
+  return cells;
 }
 
 Cell* Grid::randomCell() {
