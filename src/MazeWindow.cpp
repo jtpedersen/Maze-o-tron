@@ -58,7 +58,7 @@ void MazeWindow::drawMaze(const Grid& grid) {
 }
 
 void MazeWindow::createMaze() {
-  Grid grid(200,200);
+  Grid grid(100,100);
   BinTreeMaker maker(grid);
   while(!maker.isDone()) {
     maker.step();
