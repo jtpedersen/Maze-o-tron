@@ -7,7 +7,6 @@
 #include <iostream>
 
 Grid::Grid(int w, int h): w_(w), h_(h) {
-
   for (int j = 0; j < h_; j++) {
     for (int i = 0; i < w_; i++) {
       cells.emplace_back( Cell{*this, i,j} );
@@ -26,13 +25,15 @@ Cell* Grid::get(const int idx)  {
   return & (cells[idx]);
 }
 
-
 const Cell* Grid::get(const int idx) const {
   if (idx < 0 || idx >= size())
     return nullptr;
   return & (cells[idx]);
 }
 
+Cell* Grid::get(const int x, const int y) {
+  return get(idx(x,y));
+}
 
 Cell* Grid::randomCell() {
   return & (*select_randomly(begin(cells), end(cells)));
@@ -40,6 +41,8 @@ Cell* Grid::randomCell() {
 
 int Grid::edgeCount() {
   int cnt = 0;
+  for(auto& e: edges) 
+    cnt += (e.second).size();
   return cnt;
 }
 
@@ -55,7 +58,6 @@ bool Grid::contains(const int idx) const {
   if (idx < 0 || idx >= size())
     return false;
   return cells[idx].valid();
-
 }
 
 int Grid::size() const {

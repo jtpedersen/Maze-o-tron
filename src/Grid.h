@@ -14,6 +14,7 @@ public:
   Grid();
 
   Cell* get(const int idx);
+  Cell* get(const int x, const int y);
   const Cell* get(const int idx) const;
   
   Cell* randomCell();

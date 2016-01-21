@@ -47,61 +47,34 @@ TEST(grid, addEdge) {
 }
 
 
-// TEST(grid, directionLinks) {
-//   Grid g(3,3);
-//   auto center = g.get(1,1);
-//   center->link( center->E);
-//   EXPECT_TRUE( center->linked( center->E));
-//   EXPECT_TRUE( center->E->linked( center));
-// }
+TEST(grid, directionLinks) {
+  Grid g(3,3);
+  auto center = g.get(1,1);
+  center->link( center->E);
+  EXPECT_TRUE( g.linked(center->idx(), center->E));
+  EXPECT_TRUE( g.linked(center->E, center->idx()));
+}
 
-// test(grid, directionLinksW) {
-//   Grid g(3,3);
-//   auto center = g.get(1,1);
-//   center->link( center->W);
-//   EXPECT_TRUE( center->linked( center->W));
-//   EXPECT_TRUE( center->W->linked( center));
-// }
+TEST(grid, allInThere) {
+  Grid grid(3,3);
+  EXPECT_FALSE(grid.get(42));
+  for(int i = 0; i < grid.size(); i++) {
+    auto c = *(grid.get(i));
+    int dirs[] = {c.N, c.E, c.S, c.W};
+    for(auto d: dirs) {
+      if (d >= 0)
+	EXPECT_TRUE( grid.get(d));
+    }
+  }
+}
 
-// TEST(grid, directionLinksS) {
-//   Grid g(3,3);
-//   auto center = g.get(1,1);
-//   center->link( center->S);
-//   EXPECT_TRUE( center->linked( center->S));
-//   EXPECT_TRUE( center->S->linked( center));
-// }
+TEST(grid, edgeCount) {
+  Grid g(3,3);
+  EXPECT_EQ(0, g.edgeCount());
 
-// TEST(grid, directionLinksN) {
-//   Grid g(3,3);
-//   auto center = g.get(1,1);
-//   center->link( center->N);
-//   EXPECT_TRUE( center->linked( center->N));
-//   EXPECT_TRUE( center->N->linked( center));
-// }
-
-// TEST(grid, allInThere) {
-//   Grid grid(3,3);
-
-//   EXPECT_FALSE(grid.contains((Cell*) 42));
-  
-//   for(auto& c: grid.cells) {
-//     Cell* dirs[] = {c.N, c.E, c.S, c.W};
-//     for(auto d: dirs) {
-//       if (!d)
-// 	continue;
-//       EXPECT_TRUE( grid.contains(d));
-//     }
-//   }
-  
-// }
-
-// TEST(grid, edgeCount) {
-//   Grid g(3,3);
-//   EXPECT_EQ(0, g.edgeCount());
-
-//   g.get(1,1)->link( g.get(0,1));
-//   EXPECT_EQ(2, g.edgeCount());
-// }
+  g.get(1,1)->link( g.idx(0,1) );
+  EXPECT_EQ(2, g.edgeCount());
+}
 
 
 
