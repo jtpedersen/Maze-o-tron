@@ -29,15 +29,37 @@ void MazeWindow::createActions() {
   newMaze->setShortcuts(QKeySequence::New);
   newMaze->setStatusTip(tr("Create a new Maze"));
   QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
+
+  playAction = new QAction(QIcon(":/play"), tr("&Play"), this);
+  // playAction->setShortcuts(QKeySequence::New);
+  playAction->setStatusTip(tr("Start construction"));
+  //QObject::connect(playAction, &QAction::triggered, [this] { this->createMaze();});
+
+  pauseAction = new QAction(QIcon(":/pause"), tr("&Pause"), this);
+  // pauseAction->setShortcuts(QKeySequence::New);
+  pauseAction->setStatusTip(tr("pause construction"));
+
+  stepAction = new QAction(QIcon(":/step"), tr("&Step"), this);
+  // stepAction->setShortcuts(QKeySequence::New);
+  stepAction->setStatusTip(tr("step construction"));
+  QObject::connect(stepAction, &QAction::triggered, [this] { 
+      if(maker && !maker->isDone()) {
+	maker->step();
+	drawMaze(maker->getGrid());
+      }});
+
 }
 
 void MazeWindow::setupToolBar() {
   toolbar = addToolBar(tr("Mazes"));
   toolbar->addAction(newMaze);
+
+  toolbar->addAction(stepAction);
 }
 
 void MazeWindow::drawMaze(const Grid& grid) {
-  qreal cellSize = 5.0;
+  scene->clear();
+  qreal cellSize = 35.0;
   
   for(const auto&c :grid.getCells()) {
     qreal x1 = c.x() * cellSize;
@@ -58,10 +80,7 @@ void MazeWindow::drawMaze(const Grid& grid) {
 }
 
 void MazeWindow::createMaze() {
-  Grid grid(100,100);
-  BinTreeMaker maker(grid);
-  while(!maker.isDone()) {
-    maker.step();
-  }
-  drawMaze(maker.getGrid());
+  const auto& grid = Grid(10,10);
+  maker = std::make_unique<BinTreeMaker>(grid);
+  drawMaze(maker->getGrid());
 }

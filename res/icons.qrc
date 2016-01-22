@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file alias="maze">maze.png</file>
+	<file alias="play">play.png</file>
+	<file alias="pause">pause.png</file>
+	<file alias="step">step.png</file>
+	<file alias="stop">stop.png</file>
     </qresource>
 </RCC>

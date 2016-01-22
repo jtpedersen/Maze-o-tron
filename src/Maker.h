@@ -5,6 +5,7 @@
 class Grid;
 class Maker {
 public:
+  virtual ~Maker() {};
   /// return the grid such that it can be rendered
   virtual const Grid& getGrid() const = 0;
   /// take one step with whe algorithm

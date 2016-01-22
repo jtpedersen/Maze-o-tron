@@ -2,7 +2,13 @@
 #define MAZEWINDOW_H_
 
 #include <QtWidgets>
+#include <memory>
+
+#include "BinTreeMaker.h"
+
 class Grid;
+
+
 
 class MazeWindow : public QMainWindow
 {
@@ -17,15 +23,25 @@ class MazeWindow : public QMainWindow
   void init();
   void createActions();
   void setupToolBar();
-
+  
+  // create a grid to build a maze on
   void createMaze();
+  //take a step
   
-  QGraphicsScene *scene; 
-  QGraphicsView *view;
-  QToolBar *toolbar;
+  QGraphicsScene *scene = nullptr;
+  QGraphicsView *view = nullptr;
+  QToolBar *toolbar = nullptr;
 
-  QAction *newMaze;
+  QAction *newMaze = nullptr;
+  QAction *playAction = nullptr;
+  QAction *pauseAction = nullptr;
+  QAction *stepAction = nullptr;
+  QAction *stopAction = nullptr;
   
+  std::unique_ptr<Maker> maker;
+
+
+
 };
 
 #endif /* !MAZEWINDOW_H_ */

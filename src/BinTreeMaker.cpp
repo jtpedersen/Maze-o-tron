@@ -10,6 +10,10 @@ BinTreeMaker::BinTreeMaker(const Grid& grid)
 
 }
 
+BinTreeMaker::~BinTreeMaker() {
+
+}
+
 const Grid& BinTreeMaker::getGrid() const {
   return grid;
 }
