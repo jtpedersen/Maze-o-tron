@@ -1,25 +1,21 @@
-#ifndef BINTREEMAKER_H_
-#define BINTREEMAKER_H_
-
 #include "Maker.h"
 #include "Grid.h"
 
-class BinTreeMaker : public Maker {
+#include <vector>
+
+class SideWinderMaker : public Maker {
 public:
-  BinTreeMaker(const Grid&);
-  virtual ~BinTreeMaker();
+  SideWinderMaker(const Grid&);
+  virtual ~SideWinderMaker();
   /// return the grid such that it can be rendered
   virtual const Grid& getGrid() const;
   /// take one step with whe algorithm
   virtual void step();
   /// can any mopre steps be taken
   virtual bool isDone() const;
-
   virtual int currentIdx() const;
 private:
   Grid grid;
-
+  std::vector<Cell*> run;
   int idx; /*!< the current index of cell */
 };
-
-#endif /* !BINTREEMAKER_H_ */

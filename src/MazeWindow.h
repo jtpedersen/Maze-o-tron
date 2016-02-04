@@ -37,6 +37,8 @@ class MazeWindow : public QMainWindow
   QAction *pauseAction = nullptr;
   QAction *stepAction = nullptr;
   QAction *stopAction = nullptr;
+
+  QComboBox *algorithmSelector = nullptr;
   
   std::unique_ptr<Maker> maker;
 

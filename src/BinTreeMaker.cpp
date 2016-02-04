@@ -11,7 +11,6 @@ BinTreeMaker::BinTreeMaker(const Grid& grid)
 }
 
 BinTreeMaker::~BinTreeMaker() {
-
 }
 
 const Grid& BinTreeMaker::getGrid() const {
@@ -20,6 +19,11 @@ const Grid& BinTreeMaker::getGrid() const {
 
 bool BinTreeMaker::isDone() const {
   return idx >= grid.size();
+}
+
+
+int BinTreeMaker::currentIdx() const {
+  return idx;
 }
 
 void BinTreeMaker::step() {

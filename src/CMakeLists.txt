@@ -9,13 +9,16 @@ add_library(
   Cell.cpp
   Grid.h
   Grid.cpp
+  util.cpp
   BinTreeMaker.cpp
+  SideWinderMaker.cpp
 )
 
 add_executable(mazer 
   main.cpp
   MazeWindow.h
   MazeWindow.cpp
+  Colorizer.cpp
   ${resources_added}
   )
 

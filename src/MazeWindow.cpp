@@ -1,9 +1,12 @@
 #include "MazeWindow.h"
+#include "Colorizer.h"
 
 #include <Grid.h>
 #include <Cell.h>
 #include <BinTreeMaker.h>
+#include <SideWinderMaker.h>
 #include <util.h>
+
 
 #include <iterator>
 #include <iostream>
@@ -19,9 +22,9 @@ MazeWindow::MazeWindow() {
 void MazeWindow::init() {
   scene = new QGraphicsScene(this);
   view = new QGraphicsView(scene);
+  algorithmSelector = new QComboBox(this);
   view->show();
   setCentralWidget(view);
-
 }
 
 void MazeWindow::createActions() {
@@ -38,15 +41,16 @@ void MazeWindow::createActions() {
   stepAction = new QAction(QIcon(":/step"), tr("&Step"), this);
   stepAction->setStatusTip(tr("step construction"));
 
-  QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
+  algorithmSelector->addItem(tr("BinaryTree"));
+  algorithmSelector->addItem(tr("SideWinder"));
 
+  QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
 
   QObject::connect(stepAction, &QAction::triggered, [this] { 
       if(maker && !maker->isDone()) {
 	maker->step();
 	drawMaze(maker->getGrid());
       }});
- 
 
   QObject::connect(playAction, &QAction::triggered, [this] { 
       if (!maker) return;
@@ -55,7 +59,7 @@ void MazeWindow::createActions() {
       }
       drawMaze(maker->getGrid());
     });
- 
+
 }
 
 void MazeWindow::setupToolBar() {
@@ -63,32 +67,45 @@ void MazeWindow::setupToolBar() {
   toolbar->addAction(newMaze);
   toolbar->addAction(stepAction);
   toolbar->addAction(playAction);
+  toolbar->addWidget(algorithmSelector);
 }
 
 void MazeWindow::drawMaze(const Grid& grid) {
   scene->clear();
   qreal cellSize = 35.0;
-  
+  SimpleColorizer colorizer;
+  QPen border(QColor(0,0,0));
   for(const auto&c :grid.getCells()) {
     qreal x1 = c.x() * cellSize;
     qreal y1 = c.y() * cellSize;
     qreal x2 = x1 + cellSize;
     qreal y2 = y1 + cellSize;
 
+    auto color = colorizer.getColorForCell(c.idx(), maker->currentIdx());
+    QBrush brush(color);
+    QPen pen(color);
+    //    scene->addRect(x1,y1,cellSize,cellSize,pen,brush);
+    
     if (c.N < 0)
-      scene->addLine(x1,y1, x2,y1);
+      scene->addLine(x1,y1, x2,y1, border);
     if (c.W < 0)
-      scene->addLine(x1,y1, x1,y2);
+      scene->addLine(x1,y1, x1,y2, border);
     if ( ! c.linked(c.E))
-      scene->addLine(x2,y1, x2,y2);
+      scene->addLine(x2,y1, x2,y2, border);
     if ( ! c.linked(c.S))
-      scene->addLine(x1,y2, x2,y2);
+      scene->addLine(x1,y2, x2,y2, border);
 
   }
 }
 
 void MazeWindow::createMaze() {
   const auto& grid = Grid(10,10);
-  maker = std::make_unique<BinTreeMaker>(grid);
+ 
+  if (algorithmSelector->currentText() == tr("BinaryTree")) {
+    maker = std::make_unique<BinTreeMaker>(grid);
+  } else {
+    maker = std::make_unique<SideWinderMaker>(grid);
+  }
+
   drawMaze(maker->getGrid());
 }
