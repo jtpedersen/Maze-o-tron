@@ -28,33 +28,41 @@ void MazeWindow::createActions() {
   newMaze = new QAction(QIcon(":/maze"), tr("&New"), this);
   newMaze->setShortcuts(QKeySequence::New);
   newMaze->setStatusTip(tr("Create a new Maze"));
-  QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
 
   playAction = new QAction(QIcon(":/play"), tr("&Play"), this);
-  // playAction->setShortcuts(QKeySequence::New);
   playAction->setStatusTip(tr("Start construction"));
-  //QObject::connect(playAction, &QAction::triggered, [this] { this->createMaze();});
 
   pauseAction = new QAction(QIcon(":/pause"), tr("&Pause"), this);
-  // pauseAction->setShortcuts(QKeySequence::New);
   pauseAction->setStatusTip(tr("pause construction"));
 
   stepAction = new QAction(QIcon(":/step"), tr("&Step"), this);
-  // stepAction->setShortcuts(QKeySequence::New);
   stepAction->setStatusTip(tr("step construction"));
+
+  QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
+
+
   QObject::connect(stepAction, &QAction::triggered, [this] { 
       if(maker && !maker->isDone()) {
 	maker->step();
 	drawMaze(maker->getGrid());
       }});
+ 
 
+  QObject::connect(playAction, &QAction::triggered, [this] { 
+      if (!maker) return;
+      while(!maker->isDone()) {
+	maker->step();
+      }
+      drawMaze(maker->getGrid());
+    });
+ 
 }
 
 void MazeWindow::setupToolBar() {
   toolbar = addToolBar(tr("Mazes"));
   toolbar->addAction(newMaze);
-
   toolbar->addAction(stepAction);
+  toolbar->addAction(playAction);
 }
 
 void MazeWindow::drawMaze(const Grid& grid) {
