@@ -84,7 +84,8 @@ void MazeWindow::drawMaze(const Grid& grid) {
     auto color = colorizer.getColorForCell(c.idx(), maker->currentIdx());
     QBrush brush(color);
     QPen pen(color);
-    //    scene->addRect(x1,y1,cellSize,cellSize,pen,brush);
+    int rs = cellSize - 2 * border.width();
+    scene->addRect(x1+border.width(),y1+border.width(),rs,rs,pen,brush);
     
     if (c.N < 0)
       scene->addLine(x1,y1, x2,y1, border);
