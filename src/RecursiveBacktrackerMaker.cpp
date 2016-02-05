@@ -29,7 +29,11 @@ int RecursiveBacktrackerMaker::currentIdx() const {
 bool RecursiveBacktrackerMaker::canditate(int idx) const {
   if (idx < 0)
     return false;
-  return visited.end() == visited.find(idx);
+  return ! hasVisited(idx);
+}
+
+bool RecursiveBacktrackerMaker::hasVisited(int idx) const {
+  return visited.end() != visited.find(idx);
 }
 
 void RecursiveBacktrackerMaker::step() {
@@ -50,5 +54,4 @@ void RecursiveBacktrackerMaker::step() {
   c->link(idx);
   visited.insert(idx);
   stack.push_back(idx);
-
 }

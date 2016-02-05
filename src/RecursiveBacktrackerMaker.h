@@ -18,6 +18,9 @@ class RecursiveBacktrackerMaker : public Maker {
   virtual bool isDone() const;
 
   virtual int currentIdx() const;
+
+  bool hasVisited(int idx) const;
+  
  private:
   Grid grid;
   std::set<int> visited;
@@ -25,8 +28,8 @@ class RecursiveBacktrackerMaker : public Maker {
   int idx = 0; /*!< the current index of cell */
 
   bool canditate(int idx) const;
+  friend class RecursiveBacktrackerColorizer;
   
 };
-
 
 #endif /* !RECURSIVEBACKTRACKERMAKER_H_ */

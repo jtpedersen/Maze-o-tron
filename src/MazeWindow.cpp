@@ -79,9 +79,10 @@ void MazeWindow::setupToolBar() {
 }
 
 void MazeWindow::drawMaze(const Grid& grid) {
+  Q_ASSERT(colorizer);
   scene->clear();
   qreal cellSize = 35;
-  SimpleColorizer colorizer;
+
   QPen border(QColor(0,0,0));
   for(const auto&c :grid.getCells()) {
     qreal x1 = c.x() * cellSize;
@@ -89,7 +90,7 @@ void MazeWindow::drawMaze(const Grid& grid) {
     qreal x2 = x1 + cellSize;
     qreal y2 = y1 + cellSize;
 
-    auto color = colorizer.getColorForCell(c.idx(), maker->currentIdx());
+    auto color = colorizer->getColorForCell(c.idx());
     QBrush brush(color);
     QPen pen(color);
     int rs = cellSize - 2 * border.width();
@@ -113,10 +114,14 @@ void MazeWindow::createMaze() {
   auto selected = algorithmSelector->currentText();
   if (selected == tr("BinaryTree")) {
     maker = std::make_unique<BinTreeMaker>(Grid(w,h));
+    colorizer = std::make_unique<SimpleColorizer>(maker.get());
   } else if (selected == tr("SideWinder")) {
     maker = std::make_unique<SideWinderMaker>(Grid(w,h));
+    colorizer = std::make_unique<SimpleColorizer>(maker.get());
   } else if (selected == tr("RecursiveBacktracker")) {
     maker = std::make_unique<RecursiveBacktrackerMaker>(Grid(w,h));
+    auto* ptr = static_cast<RecursiveBacktrackerMaker*>(maker.get());
+    colorizer = std::make_unique<RecursiveBacktrackerColorizer>(ptr);
   } else {
     Q_ASSERT(false);
   }

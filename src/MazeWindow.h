@@ -1,14 +1,13 @@
 #ifndef MAZEWINDOW_H_
 #define MAZEWINDOW_H_
 
+#include "Colorizer.h"
+#include "Maker.h"
+
 #include <QtWidgets>
 #include <memory>
 
-#include "BinTreeMaker.h"
-
 class Grid;
-
-
 
 class MazeWindow : public QMainWindow
 {
@@ -43,6 +42,8 @@ class MazeWindow : public QMainWindow
   QSpinBox *dimensionSetter = nullptr;
 
   std::unique_ptr<Maker> maker;
+
+  std::unique_ptr<Colorizer> colorizer;
 };
 
 #endif /* !MAZEWINDOW_H_ */
