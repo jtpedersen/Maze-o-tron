@@ -12,6 +12,7 @@ add_library(
   util.cpp
   BinTreeMaker.cpp
   SideWinderMaker.cpp
+  RecursiveBacktrackerMaker.cpp
 )
 
 add_executable(mazer 
