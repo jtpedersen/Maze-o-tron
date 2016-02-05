@@ -26,7 +26,8 @@ class MazeWindow : public QMainWindow
   
   // create a grid to build a maze on
   void createMaze();
-  //take a step
+  //take a step, trigger new step later
+  void tick();
   
   QGraphicsScene *scene = nullptr;
   QGraphicsView *view = nullptr;

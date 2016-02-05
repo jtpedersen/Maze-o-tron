@@ -56,12 +56,15 @@ void MazeWindow::createActions() {
       }});
 
   QObject::connect(playAction, &QAction::triggered, [this] { 
-      if (!maker) return;
-      while(!maker->isDone()) {
-	maker->step();
-      }
-      drawMaze(maker->getGrid());
+      tick();
     });
+}
+
+void MazeWindow::tick() {
+  if (!maker || maker->isDone()) return;
+  maker->step();
+  drawMaze(maker->getGrid());
+  QTimer::singleShot(200, [this] () { this->tick();});
 }
 
 void MazeWindow::setupToolBar() {
