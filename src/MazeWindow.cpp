@@ -7,10 +7,8 @@
 #include <SideWinderMaker.h>
 #include <util.h>
 
-
 #include <iterator>
 #include <iostream>
-
 
 MazeWindow::MazeWindow() {
   init();
@@ -44,6 +42,11 @@ void MazeWindow::createActions() {
   algorithmSelector->addItem(tr("BinaryTree"));
   algorithmSelector->addItem(tr("SideWinder"));
 
+  dimensionSetter = new QSpinBox(this);
+  dimensionSetter->setMinimum(2);
+  dimensionSetter->setMaximum(100);
+  dimensionSetter->setValue(20);
+
   QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
 
   QObject::connect(stepAction, &QAction::triggered, [this] { 
@@ -59,11 +62,11 @@ void MazeWindow::createActions() {
       }
       drawMaze(maker->getGrid());
     });
-
 }
 
 void MazeWindow::setupToolBar() {
   toolbar = addToolBar(tr("Mazes"));
+  toolbar->addWidget(dimensionSetter);
   toolbar->addAction(newMaze);
   toolbar->addAction(stepAction);
   toolbar->addAction(playAction);
@@ -72,7 +75,7 @@ void MazeWindow::setupToolBar() {
 
 void MazeWindow::drawMaze(const Grid& grid) {
   scene->clear();
-  qreal cellSize = 35.0;
+  qreal cellSize = 35;
   SimpleColorizer colorizer;
   QPen border(QColor(0,0,0));
   for(const auto&c :grid.getCells()) {
@@ -100,7 +103,10 @@ void MazeWindow::drawMaze(const Grid& grid) {
 }
 
 void MazeWindow::createMaze() {
-  const auto& grid = Grid(10,10);
+
+  int w,h;
+  w = h = dimensionSetter->value();
+  Grid grid(w,h);
  
   if (algorithmSelector->currentText() == tr("BinaryTree")) {
     maker = std::make_unique<BinTreeMaker>(grid);
