@@ -15,8 +15,12 @@ TESTCASE(
   cellTest
   )
 
-
 TESTCASE(
   gridTest
   gridTest
+  )
+
+TESTCASE(
+  setTest
+  setTest
   )
