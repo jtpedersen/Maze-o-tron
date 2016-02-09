@@ -3,10 +3,10 @@
 #include "util.h"
 
 #include <iostream>
-#include <cassert>
+#include <algorithm>
 
 RecursiveBacktrackerMaker::RecursiveBacktrackerMaker(const Grid& grid)
-   : grid(grid)
+  : grid(grid)
 {
   stack.push_back(0);
   visited.insert(0);
@@ -38,11 +38,10 @@ bool RecursiveBacktrackerMaker::hasVisited(int idx) const {
 
 void RecursiveBacktrackerMaker::step() {
   auto c = grid.get(idx);
-  std::vector<int> ls;
-  int dirs[] = { c->N, c->E, c->S, c->W};
-  for (const auto& d: dirs)
-    if (canditate(d))
-      ls.push_back(d);
+  std::vector<int> ls { c->N, c->E, c->S, c->W};
+  ls.erase(std::remove_if(begin(ls), end(ls), 
+			  [this] (const int& i) {return !this->canditate(i);}),
+	   end(ls));
 
   if (ls.empty()) {
     idx = stack.back();
