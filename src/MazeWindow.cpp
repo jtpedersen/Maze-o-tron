@@ -6,6 +6,7 @@
 #include <BinTreeMaker.h>
 #include <SideWinderMaker.h>
 #include <RecursiveBacktrackerMaker.h>
+#include <PrimMaker.h>
 #include <util.h>
 
 #include <iterator>
@@ -43,6 +44,7 @@ void MazeWindow::createActions() {
   algorithmSelector->addItem(tr("BinaryTree"));
   algorithmSelector->addItem(tr("SideWinder"));
   algorithmSelector->addItem(tr("RecursiveBacktracker"));
+  algorithmSelector->addItem(tr("Prims"));
 
   dimensionSetter = new QSpinBox(this);
   dimensionSetter->setMinimum(2);
@@ -122,6 +124,9 @@ void MazeWindow::createMaze() {
     maker = std::make_unique<RecursiveBacktrackerMaker>(Grid(w,h));
     auto* ptr = static_cast<RecursiveBacktrackerMaker*>(maker.get());
     colorizer = std::make_unique<RecursiveBacktrackerColorizer>(ptr);
+  } else if (selected == tr("Prims")) {
+    maker = std::make_unique<PrimMaker>(Grid(w,h));
+    colorizer = std::make_unique<SimpleColorizer>(maker.get());
   } else {
     Q_ASSERT(false);
   }

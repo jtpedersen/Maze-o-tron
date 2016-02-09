@@ -13,6 +13,7 @@ add_library(
   BinTreeMaker.cpp
   SideWinderMaker.cpp
   RecursiveBacktrackerMaker.cpp
+  PrimMaker.cpp
   Set.cpp
 )
 
