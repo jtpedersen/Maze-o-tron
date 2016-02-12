@@ -7,20 +7,16 @@
 
 #include <utility>
 
-class PrimMaker : public Maker {
+class PrimMaker : public AbstractMaker {
 public:
-  PrimMaker(const Grid&);
+  PrimMaker();
   virtual ~PrimMaker();
-  /// return the grid such that it can be rendered
-  virtual const Grid& getGrid() const;
   /// take one step with whe algorithm
   virtual void step();
   /// can any mopre steps be taken
   virtual bool isDone() const;
-  virtual void setGrid(const Grid&);
-  virtual int currentIdx() const;
+  int currentIdx() const;
 private:
-  Grid grid;
   Set set;
   std::vector< std::pair<int,int>> edges;
   int idx; /*!< the current index of cell */

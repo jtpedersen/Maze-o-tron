@@ -4,7 +4,7 @@
 
 class Set {
  public:
-  Set(int cnt);
+  Set(int cnt = 0);
   int find(int);
   void link(int, int);
   void dump() const;

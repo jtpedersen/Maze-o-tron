@@ -17,13 +17,17 @@ Grid::Grid(int w, int h): w_(w), h_(h) {
 Cell* Grid::get(const int idx)  {
   if (idx < 0 || idx >= size())
     return nullptr;
-  return & (cells[idx]);
+  auto ptr = & (cells[idx]);
+  ptr->setGrid(this);
+  return ptr;
 }
 
 const Cell* Grid::get(const int idx) const {
   if (idx < 0 || idx >= size())
     return nullptr;
-  return & (cells[idx]);
+  auto ptr = const_cast<Cell*> (& (cells[idx]));
+  ptr->setGrid(const_cast<Grid*>(this));
+  return ptr;
 }
 
 Cell* Grid::get(const int x, const int y) {
@@ -87,6 +91,9 @@ bool Grid::linked(const int a, const int b) const {
   return out.count(b) > 0;
 }
 
+bool Grid::linked(const Cell* a, const int b) const {
+  return linked(a->idx(), b);
+}
 
 
 std::ostream& operator<<(std::ostream& os, const Grid& g) {
@@ -105,8 +112,8 @@ std::ostream& operator<<(std::ostream& os, const Grid& g) {
     for (int i = 0; i < g.w(); i++) {
       auto idx = g.idx(i, j);
       auto c = g.get( idx);
-      top << "   " << ( c->linked(c->E) ? " " : "|");
-      bottom << ( c->linked(c->S) ? "   " : "---") << "+";
+      top << "   " << ( g.linked(c, c->E) ? " " : "|");
+      bottom << ( g.linked(c,c->S) ? "   " : "---") << "+";
     }
     os << top.str() << std::endl;
     os << bottom.str() << std::endl;

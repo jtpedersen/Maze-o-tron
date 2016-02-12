@@ -1,6 +1,7 @@
 #ifndef MAKERFACTORY_H_
 #define MAKERFACTORY_H_
 
+#include "Maker.h"
 #include "RecursiveBacktrackerMaker.h"
 #include "Colorizer.h"
 
@@ -24,9 +25,10 @@ protected:
 class RecursiveBacktrackerMakerFactory : public AbstractMakerFactory {
 public:
 RecursiveBacktrackerMakerFactory() {
-    auto rbtm = std::make_shared<RecursiveBacktrackerMaker>();
-    colorizer_ = std::make_shared<RecursiveBacktrackerColorizer>(rbtm);
-    maker_ = rbtm;
+  auto rbtm = std::make_shared<RecursiveBacktrackerMaker>();
+  colorizer_ = std::make_shared<RecursiveBacktrackerColorizer>(rbtm);
+  maker_ = std::shared_ptr<Maker>(rbtm);
+    
   }
 };
 

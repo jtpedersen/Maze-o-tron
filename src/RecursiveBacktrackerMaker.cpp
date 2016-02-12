@@ -5,24 +5,10 @@
 #include <iostream>
 #include <algorithm>
 
-RecursiveBacktrackerMaker::RecursiveBacktrackerMaker()
-{
-  stack.push_back(0);
-  visited.insert(0);
-}
-
 RecursiveBacktrackerMaker::~RecursiveBacktrackerMaker() {}
 
-const Grid& RecursiveBacktrackerMaker::getGrid() const {
-  return grid;
-}
-
-void RecursiveBacktrackerMaker::setGrid(const Grid& g) {
-  grid = g;
-}
-
 bool RecursiveBacktrackerMaker::isDone() const {
-  return visited.size() == static_cast<unsigned int>(grid.size());
+  return visited.size() == static_cast<unsigned int>(grid().size());
 }
 
 int RecursiveBacktrackerMaker::currentIdx() const {
@@ -40,7 +26,7 @@ bool RecursiveBacktrackerMaker::hasVisited(int idx) const {
 }
 
 void RecursiveBacktrackerMaker::step() {
-  auto c = grid.get(idx);
+  auto c = grid().get(idx);
   std::vector<int> ls { c->N, c->E, c->S, c->W};
   ls.erase(std::remove_if(begin(ls), end(ls), 
 			  [this] (const int& i) {return !this->canditate(i);}),

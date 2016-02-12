@@ -19,7 +19,7 @@ public:
   bool valid() const;
   void setGrid(Grid *);
   /* conviniece to access the edges in Grid */
-  bool linked(const int other) const;
+
   void link(const int other);
   void unlink(const int other);
   
@@ -31,7 +31,7 @@ public:
   int E = -1;
   int S = -1;
   int W = -1;
-
+  operator int();
 private:
   Grid* grid;
   int x_,y_; /*!< position in rectangular grid*/

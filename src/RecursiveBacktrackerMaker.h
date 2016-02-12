@@ -6,18 +6,13 @@
 #include <set>
 #include <vector>
 
-class RecursiveBacktrackerMaker : public Maker {
+class RecursiveBacktrackerMaker : public AbstractMaker {
  public:
-  RecursiveBacktrackerMaker();
   virtual ~RecursiveBacktrackerMaker();
-  /// return the grid such that it can be rendered
-  virtual const Grid& getGrid() const;
   /// take one step with whe algorithm
   virtual void step();
   /// can any mopre steps be taken
   virtual bool isDone() const;
-  
-  virtual void setGrid(const Grid&);
 
   int currentIdx() const;
 
@@ -25,7 +20,6 @@ class RecursiveBacktrackerMaker : public Maker {
 
   
  private:
-  Grid grid;
   std::set<int> visited;
   std::vector<int> stack;
   int idx = 0; /*!< the current index of cell */

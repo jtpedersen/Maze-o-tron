@@ -1,5 +1,6 @@
 #include "Colorizer.h"
 #include "RecursiveBacktrackerMaker.h"
+#include "Cell.h"
 
 static const QColor current(255,0,0);
 static const QColor done(255,255,255);
@@ -9,9 +10,10 @@ SimpleColorizer::SimpleColorizer(Maker *m)
   : maker(m) {}
 
 QColor SimpleColorizer::getColorForCell(const int i) const {
-  if (maker->currentIdx() == i) {
+  auto cur = 0; //maker->currentIdx()
+  if (cur == i) {
     return current;
-  } else if ( i < maker->currentIdx() ) { 	// visited
+  } else if ( i < cur ) { 	// visited
     return done;
   } else {
     return pristine;

@@ -57,7 +57,7 @@ void MazeWindow::createActions() {
   QObject::connect(stepAction, &QAction::triggered, [this] { 
       if(maker && !maker->isDone()) {
 	maker->step();
-	drawMaze(maker->getGrid());
+	drawMaze(maker->grid());
       }});
 
   QObject::connect(playAction, &QAction::triggered, [this] { 
@@ -68,7 +68,7 @@ void MazeWindow::createActions() {
 void MazeWindow::tick() {
   if (!maker || maker->isDone()) return;
   maker->step();
-  drawMaze(maker->getGrid());
+  drawMaze(maker->grid());
   QTimer::singleShot(200, [this] () { this->tick();});
 }
 
@@ -103,9 +103,9 @@ void MazeWindow::drawMaze(const Grid& grid) {
       scene->addLine(x1,y1, x2,y1, border);
     if (c.W < 0)
       scene->addLine(x1,y1, x1,y2, border);
-    if ( ! c.linked(c.E))
+    if ( ! grid.linked(c.idx(), c.E))
       scene->addLine(x2,y1, x2,y2, border);
-    if ( ! c.linked(c.S))
+    if ( ! grid.linked(c.idx(), c.S))
       scene->addLine(x1,y2, x2,y2, border);
 
   }
@@ -117,21 +117,22 @@ void MazeWindow::createMaze() {
   
   auto selected = algorithmSelector->currentText();
   if (selected == tr("BinaryTree")) {
-    maker = std::make_shared<BinTreeMaker>(Grid(w,h));
-    colorizer = std::make_shared<SimpleColorizer>(maker.get());
+    // maker = std::make_shared<BinTreeMaker>();
+    // colorizer = std::make_shared<SimpleColorizer>(maker.get());
   } else if (selected == tr("SideWinder")) {
-    maker = std::make_shared<SideWinderMaker>(Grid(w,h));
-    colorizer = std::make_shared<SimpleColorizer>(maker.get());
+    // maker = std::make_shared<SideWinderMaker>();
+    // colorizer = std::make_shared<SimpleColorizer>(maker.get());
   } else if (selected == tr("RecursiveBacktracker")) {
     auto factory = RecursiveBacktrackerMakerFactory();
     maker = factory.maker();
     colorizer = factory.colorizer();
-    maker->setGrid(Grid(w,h));
+
   } else if (selected == tr("Prims")) {
-    maker = std::make_shared<PrimMaker>(Grid(w,h));
-    colorizer = std::make_shared<SimpleColorizer>(maker.get());
+    maker = std::make_shared<PrimMaker>();
+    //colorizer = std::make_shared<SimpleColorizer>(maker.get());
   } else {
     Q_ASSERT(false);
   }
-  drawMaze(maker->getGrid());
+  maker->setGrid(Grid(w,h));
+  drawMaze(maker->grid());
 }

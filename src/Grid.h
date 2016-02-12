@@ -5,7 +5,7 @@
 #include <set>
 #include <vector>
 
-class Cell;
+#include "Cell.h"
 
 class Grid {
 
@@ -23,6 +23,11 @@ public:
   void removeEdge(const int a, const int b);
 
   bool linked(const int a, const int b) const;
+  bool linked(const Cell* a, const int b) const;
+  
+  /* bool link(const int a, const int b); */
+  /* bool link(const Cell* a, const int b); */
+
   bool contains(const int idx) const; 
 
   int edgeCount();
@@ -36,7 +41,6 @@ public:
 
   friend std::ostream& operator<<(std::ostream& os, const Grid& g);
  private:
-  void swap(Grid& a, Grid b);
   int w_,h_;
   std::vector<Cell> cells;
   std::map<int, std::set<int>> edges;

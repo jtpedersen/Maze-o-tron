@@ -7,11 +7,10 @@
 #include <algorithm>
 #include <cassert>
 
-PrimMaker::PrimMaker(const Grid& grid)
-  : grid(grid), idx(0), set(grid.size()) {
-  
-  for (int i = 0; i < grid.size(); i++) {
-    auto c = grid.get(i);
+PrimMaker::PrimMaker() {
+  set = Set(grid().size());
+  for (int i = 0; i < grid().size(); i++) {
+	auto c = grid().get(i);
     if (c->N >= 0)
       edges.emplace_back(std::make_pair(i, c->N));
     if (c->W >= 0)
@@ -28,11 +27,6 @@ PrimMaker::PrimMaker(const Grid& grid)
 PrimMaker::~PrimMaker() {
 }
 
-const Grid& PrimMaker::getGrid() const {
-  return grid;
-}
-
-void PrimMaker::setGrid(const Grid& g) { grid = g;}
 bool PrimMaker::isDone() const {
   return idx >= edges.size();
 }
@@ -53,8 +47,8 @@ void PrimMaker::step() {
   if (a == b) return;
 
   set.link(a,b);
-  grid.addEdge(e.first, e.second);
-  grid.addEdge(e.second, e.first);
+  grid().addEdge(e.first, e.second);
+  grid().addEdge(e.second, e.first);
   //  std::cout << "addEdge: " << e.first << "<--> " << e.second  << "\n";
 }
 

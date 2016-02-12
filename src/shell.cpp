@@ -19,12 +19,14 @@ int main(int argc, char *argv[]) {
     verbose = true;
   
   Grid grid(w,h);
-  BinTreeMaker maker(grid);
+  BinTreeMaker maker;
+  maker.setGrid(grid);
+  
   while(!maker.isDone()) {
     if (verbose)
-      std::cout << maker.getGrid() << std::endl;
+      std::cout << maker.grid() << std::endl;
     maker.step();
   }
-  std::cout << maker.getGrid() << std::endl;
+  std::cout << maker.grid() << std::endl;
   return 0;
 }

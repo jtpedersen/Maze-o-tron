@@ -10,6 +10,7 @@ add_library(
   Grid.h
   Grid.cpp
   util.cpp
+  Maker.cpp
   BinTreeMaker.cpp
   SideWinderMaker.cpp
   RecursiveBacktrackerMaker.cpp

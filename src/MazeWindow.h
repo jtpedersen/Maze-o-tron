@@ -42,7 +42,6 @@ class MazeWindow : public QMainWindow
   QSpinBox *dimensionSetter = nullptr;
 
   std::shared_ptr<Maker> maker;
-
   std::shared_ptr<Colorizer> colorizer;
 };
 

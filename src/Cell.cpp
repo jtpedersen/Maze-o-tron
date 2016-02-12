@@ -19,6 +19,9 @@ Cell::Cell(Grid* grid, int x, int y)
 int Cell::idx() const{
   return grid->idx(x_, y_);
 }
+
+Cell::operator int() { return idx();}
+
 bool Cell::valid() const{
   return x_ >=0 && y_ >= 0;
 }
@@ -26,11 +29,6 @@ bool Cell::valid() const{
 void Cell::setGrid(Grid* g) {
   this->grid = g;
 }
-// size_t Cell::hash() const {
-//   auto h = static_cast<size_t>(y_) << 32 | static_cast<size_t>(x_);
-//   std::cout << h  << "\n";
-//   return h;
-// }
 
 bool Cell::operator<(const Cell &other) const {
   if (y_ == other.y_)
@@ -38,9 +36,6 @@ bool Cell::operator<(const Cell &other) const {
   return y_ < other.y_;
 }
 
-bool Cell::linked(const int other) const {
-  return grid->linked(idx(), other);
-}
 
 void Cell::link(const int other) {
   grid->addEdge(idx(), other);
