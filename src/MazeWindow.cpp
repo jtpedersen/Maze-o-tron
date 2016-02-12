@@ -5,9 +5,10 @@
 #include <Cell.h>
 #include <BinTreeMaker.h>
 #include <SideWinderMaker.h>
-#include <RecursiveBacktrackerMaker.h>
 #include <PrimMaker.h>
 #include <util.h>
+
+#include "MakerFactory.h"
 
 #include <iterator>
 #include <iostream>
@@ -113,20 +114,22 @@ void MazeWindow::drawMaze(const Grid& grid) {
 void MazeWindow::createMaze() {
   int w,h;
   w = h = dimensionSetter->value();
+  
   auto selected = algorithmSelector->currentText();
   if (selected == tr("BinaryTree")) {
-    maker = std::make_unique<BinTreeMaker>(Grid(w,h));
-    colorizer = std::make_unique<SimpleColorizer>(maker.get());
+    maker = std::make_shared<BinTreeMaker>(Grid(w,h));
+    colorizer = std::make_shared<SimpleColorizer>(maker.get());
   } else if (selected == tr("SideWinder")) {
-    maker = std::make_unique<SideWinderMaker>(Grid(w,h));
-    colorizer = std::make_unique<SimpleColorizer>(maker.get());
+    maker = std::make_shared<SideWinderMaker>(Grid(w,h));
+    colorizer = std::make_shared<SimpleColorizer>(maker.get());
   } else if (selected == tr("RecursiveBacktracker")) {
-    maker = std::make_unique<RecursiveBacktrackerMaker>(Grid(w,h));
-    auto* ptr = static_cast<RecursiveBacktrackerMaker*>(maker.get());
-    colorizer = std::make_unique<RecursiveBacktrackerColorizer>(ptr);
+    auto factory = RecursiveBacktrackerMakerFactory();
+    maker = factory.maker();
+    colorizer = factory.colorizer();
+    maker->setGrid(Grid(w,h));
   } else if (selected == tr("Prims")) {
-    maker = std::make_unique<PrimMaker>(Grid(w,h));
-    colorizer = std::make_unique<SimpleColorizer>(maker.get());
+    maker = std::make_shared<PrimMaker>(Grid(w,h));
+    colorizer = std::make_shared<SimpleColorizer>(maker.get());
   } else {
     Q_ASSERT(false);
   }

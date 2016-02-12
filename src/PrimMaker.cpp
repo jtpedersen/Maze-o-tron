@@ -32,6 +32,7 @@ const Grid& PrimMaker::getGrid() const {
   return grid;
 }
 
+void PrimMaker::setGrid(const Grid& g) { grid = g;}
 bool PrimMaker::isDone() const {
   return idx >= edges.size();
 }

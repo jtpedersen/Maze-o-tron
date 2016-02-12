@@ -14,6 +14,7 @@ public:
   virtual void step();
   /// can any mopre steps be taken
   virtual bool isDone() const;
+  virtual void setGrid(const Grid&);
 
   virtual int currentIdx() const;
 private:

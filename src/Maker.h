@@ -15,6 +15,9 @@ public:
   virtual bool isDone() const = 0;
   /// the index of the current / next cell to use
   virtual int currentIdx() const = 0;
+  /// Set a grid to work on ( Maker must copy )
+  virtual void setGrid(const Grid&) =0;
+
 };
 
 #endif /* !MAKER_H_ */

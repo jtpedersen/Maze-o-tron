@@ -14,7 +14,7 @@ SideWinderMaker::~SideWinderMaker() {}
 const Grid& SideWinderMaker::getGrid() const {
   return grid;
 }
-
+void SideWinderMaker::setGrid(const Grid& g) { grid = g;}
 bool SideWinderMaker::isDone() const {
   return idx >= grid.size();
 }

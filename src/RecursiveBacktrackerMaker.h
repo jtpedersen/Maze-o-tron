@@ -8,7 +8,7 @@
 
 class RecursiveBacktrackerMaker : public Maker {
  public:
-  RecursiveBacktrackerMaker(const Grid&);
+  RecursiveBacktrackerMaker();
   virtual ~RecursiveBacktrackerMaker();
   /// return the grid such that it can be rendered
   virtual const Grid& getGrid() const;
@@ -16,10 +16,13 @@ class RecursiveBacktrackerMaker : public Maker {
   virtual void step();
   /// can any mopre steps be taken
   virtual bool isDone() const;
+  
+  virtual void setGrid(const Grid&);
 
-  virtual int currentIdx() const;
+  int currentIdx() const;
 
   bool hasVisited(int idx) const;
+
   
  private:
   Grid grid;

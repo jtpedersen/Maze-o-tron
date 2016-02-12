@@ -41,9 +41,9 @@ class MazeWindow : public QMainWindow
   QComboBox *algorithmSelector = nullptr;
   QSpinBox *dimensionSetter = nullptr;
 
-  std::unique_ptr<Maker> maker;
+  std::shared_ptr<Maker> maker;
 
-  std::unique_ptr<Colorizer> colorizer;
+  std::shared_ptr<Colorizer> colorizer;
 };
 
 #endif /* !MAZEWINDOW_H_ */

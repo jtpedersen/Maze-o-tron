@@ -5,8 +5,7 @@
 #include <iostream>
 #include <algorithm>
 
-RecursiveBacktrackerMaker::RecursiveBacktrackerMaker(const Grid& grid)
-  : grid(grid)
+RecursiveBacktrackerMaker::RecursiveBacktrackerMaker()
 {
   stack.push_back(0);
   visited.insert(0);
@@ -16,6 +15,10 @@ RecursiveBacktrackerMaker::~RecursiveBacktrackerMaker() {}
 
 const Grid& RecursiveBacktrackerMaker::getGrid() const {
   return grid;
+}
+
+void RecursiveBacktrackerMaker::setGrid(const Grid& g) {
+  grid = g;
 }
 
 bool RecursiveBacktrackerMaker::isDone() const {

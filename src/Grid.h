@@ -10,10 +10,8 @@ class Cell;
 class Grid {
 
 public:
-  Grid(int w, int h);
-  Grid(const Grid&);
-  Grid();
-
+  Grid(int w = 0, int h = 0);
+  
   Cell* get(const int idx);
   Cell* get(const int x, const int y);
   const Cell* get(const int idx) const;
@@ -38,6 +36,7 @@ public:
 
   friend std::ostream& operator<<(std::ostream& os, const Grid& g);
  private:
+  void swap(Grid& a, Grid b);
   int w_,h_;
   std::vector<Cell> cells;
   std::map<int, std::set<int>> edges;

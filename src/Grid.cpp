@@ -14,19 +14,6 @@ Grid::Grid(int w, int h): w_(w), h_(h) {
   }
 }
 
-Grid::Grid() 
-  : Grid::Grid(0,0) {
-}
-
-Grid::Grid(const Grid& o) {
-  w_ = o.w();
-  h_ = o.h();
-  cells = o.cells;
-  for(auto& c: cells) {
-    c.setGrid(this);
-  }
-}
-
 Cell* Grid::get(const int idx)  {
   if (idx < 0 || idx >= size())
     return nullptr;

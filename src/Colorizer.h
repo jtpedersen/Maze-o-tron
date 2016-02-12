@@ -1,7 +1,8 @@
 #ifndef COLORIZER_H_
 #define COLORIZER_H_
 
-#include <QColor> 
+#include <QColor>
+#include <memory>
 
 class Colorizer {
  public:
@@ -21,10 +22,10 @@ class SimpleColorizer : public Colorizer{
 class RecursiveBacktrackerMaker;
 class RecursiveBacktrackerColorizer : public Colorizer {
  public:
-  RecursiveBacktrackerColorizer(RecursiveBacktrackerMaker*);
+  RecursiveBacktrackerColorizer(std::shared_ptr<RecursiveBacktrackerMaker>);
   virtual QColor getColorForCell(const int) const;
  private:
-  RecursiveBacktrackerMaker* rbm = nullptr;
+  std::shared_ptr<RecursiveBacktrackerMaker> rbm;
 };
 
 #endif /* !COLORIZER_H_ */

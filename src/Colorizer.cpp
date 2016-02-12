@@ -18,7 +18,7 @@ QColor SimpleColorizer::getColorForCell(const int i) const {
   }
 }
 
-RecursiveBacktrackerColorizer::RecursiveBacktrackerColorizer(RecursiveBacktrackerMaker* rbm)
+RecursiveBacktrackerColorizer::RecursiveBacktrackerColorizer(std::shared_ptr<RecursiveBacktrackerMaker> rbm)
   : rbm(rbm) {};
 
 QColor RecursiveBacktrackerColorizer::getColorForCell(const int idx) const {

@@ -14,6 +14,7 @@ public:
   /// can any mopre steps be taken
   virtual bool isDone() const;
   virtual int currentIdx() const;
+  virtual void setGrid(const Grid&);
 private:
   Grid grid;
   std::vector<Cell*> run;

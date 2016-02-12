@@ -17,6 +17,10 @@ const Grid& BinTreeMaker::getGrid() const {
   return grid;
 }
 
+void BinTreeMaker::setGrid(const Grid& g) {
+  grid = g;
+}
+
 bool BinTreeMaker::isDone() const {
   return idx >= grid.size();
 }
