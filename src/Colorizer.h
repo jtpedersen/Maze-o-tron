@@ -13,10 +13,10 @@ class Colorizer {
 class Maker;
 class SimpleColorizer : public Colorizer{
  public:
-  SimpleColorizer(Maker *);
+  SimpleColorizer(std::weak_ptr<Maker> );
   virtual QColor getColorForCell(const int) const;
  private:
-  Maker* maker;
+  std::weak_ptr<Maker> maker;
 };
 
 class RecursiveBacktrackerMaker;

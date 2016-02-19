@@ -6,11 +6,14 @@ static const QColor current(255,0,0);
 static const QColor done(255,255,255);
 static const QColor pristine(255,150,255);
 
-SimpleColorizer::SimpleColorizer(Maker *m)
+
+SimpleColorizer::SimpleColorizer(std::weak_ptr<Maker> m)
   : maker(m) {}
 
 QColor SimpleColorizer::getColorForCell(const int i) const {
-  auto cur = 0; //maker->currentIdx()
+  int cur = 0;
+  // if (auto spt = maker.lock()) 
+  //   cur = spt->currentIdx();
   if (cur == i) {
     return current;
   } else if ( i < cur ) { 	// visited

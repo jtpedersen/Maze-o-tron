@@ -3,9 +3,6 @@
 
 #include <Grid.h>
 #include <Cell.h>
-#include <BinTreeMaker.h>
-#include <SideWinderMaker.h>
-#include <PrimMaker.h>
 #include <util.h>
 
 #include "MakerFactory.h"
@@ -111,28 +108,19 @@ void MazeWindow::drawMaze(const Grid& grid) {
   }
 }
 
+
 void MazeWindow::createMaze() {
-  int w,h;
-  w = h = dimensionSetter->value();
   
   auto selected = algorithmSelector->currentText();
-  if (selected == tr("BinaryTree")) {
-    // maker = std::make_shared<BinTreeMaker>();
-    // colorizer = std::make_shared<SimpleColorizer>(maker.get());
-  } else if (selected == tr("SideWinder")) {
-    // maker = std::make_shared<SideWinderMaker>();
-    // colorizer = std::make_shared<SimpleColorizer>(maker.get());
-  } else if (selected == tr("RecursiveBacktracker")) {
-    auto factory = RecursiveBacktrackerMakerFactory();
-    maker = factory.maker();
-    colorizer = factory.colorizer();
+  auto factory = MakerFactory::byName(selected);
+  
+  maker = factory->maker();
+  colorizer = factory->colorizer();
 
-  } else if (selected == tr("Prims")) {
-    maker = std::make_shared<PrimMaker>();
-    //colorizer = std::make_shared<SimpleColorizer>(maker.get());
-  } else {
-    Q_ASSERT(false);
-  }
+  int w,h;
+  w = h = dimensionSetter->value();
   maker->setGrid(Grid(w,h));
+
   drawMaze(maker->grid());
 }
+

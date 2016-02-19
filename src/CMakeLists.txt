@@ -23,6 +23,7 @@ add_executable(mazer
   MazeWindow.h
   MazeWindow.cpp
   Colorizer.cpp
+  MakerFactory.cpp
   ${resources_added}
   )
 
