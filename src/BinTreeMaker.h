@@ -6,13 +6,13 @@
 
 class BinTreeMaker : public AbstractMaker {
 public:
-  virtual ~BinTreeMaker();
+  virtual ~BinTreeMaker() override = default;
   /// take one step with whe algorithm
-  virtual void step();
+  virtual void step() override;
   /// can any mopre steps be taken
-  virtual bool isDone() const;
+  virtual bool isDone() const override;
 
-  int currentIdx() const;
+  virtual int currentIdx() const override;
 private:
   int idx = 0; /*!< the current index of cell */
 };

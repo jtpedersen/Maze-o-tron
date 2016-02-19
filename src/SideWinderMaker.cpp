@@ -5,8 +5,6 @@
 #include <iostream>
 #include <cassert>
 
-SideWinderMaker::~SideWinderMaker() {}
-
 bool SideWinderMaker::isDone() const {
   return idx >= grid().size();
 }

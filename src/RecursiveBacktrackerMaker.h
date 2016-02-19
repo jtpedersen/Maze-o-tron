@@ -8,13 +8,13 @@
 
 class RecursiveBacktrackerMaker : public AbstractMaker {
  public:
-  virtual ~RecursiveBacktrackerMaker();
+  virtual ~RecursiveBacktrackerMaker() = default;
   /// take one step with whe algorithm
-  virtual void step();
+  virtual void step() override;
   /// can any mopre steps be taken
-  virtual bool isDone() const;
+  virtual bool isDone() const override;
 
-  int currentIdx() const;
+  virtual int currentIdx() const override;
 
   bool hasVisited(int idx) const;
 

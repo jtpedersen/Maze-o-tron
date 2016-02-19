@@ -12,10 +12,10 @@ public:
   PrimMaker();
   virtual ~PrimMaker();
   /// take one step with whe algorithm
-  virtual void step();
+  virtual void step() override;
   /// can any mopre steps be taken
-  virtual bool isDone() const;
-  int currentIdx() const;
+  virtual bool isDone() const override;
+  virtual int currentIdx() const override;
 private:
   Set set;
   std::vector< std::pair<int,int>> edges;

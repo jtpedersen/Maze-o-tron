@@ -5,8 +5,6 @@
 #include <iostream>
 #include <algorithm>
 
-RecursiveBacktrackerMaker::~RecursiveBacktrackerMaker() {}
-
 bool RecursiveBacktrackerMaker::isDone() const {
   return visited.size() == static_cast<unsigned int>(grid().size());
 }

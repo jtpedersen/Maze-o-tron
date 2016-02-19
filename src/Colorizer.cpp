@@ -12,8 +12,8 @@ SimpleColorizer::SimpleColorizer(std::weak_ptr<Maker> m)
 
 QColor SimpleColorizer::getColorForCell(const int i) const {
   int cur = 0;
-  // if (auto spt = maker.lock()) 
-  //   cur = spt->currentIdx();
+  if (auto spt = maker.lock()) 
+    cur = spt->currentIdx();
   if (cur == i) {
     return current;
   } else if ( i < cur ) { 	// visited

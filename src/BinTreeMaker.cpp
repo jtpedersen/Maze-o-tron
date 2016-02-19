@@ -5,13 +5,9 @@
 #include <iostream>
 #include <cassert>
 
-BinTreeMaker::~BinTreeMaker() {
-}
-
 bool BinTreeMaker::isDone() const {
   return idx >= grid().size();
 }
-
 
 int BinTreeMaker::currentIdx() const {
   return idx;
