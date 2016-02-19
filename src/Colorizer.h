@@ -22,10 +22,21 @@ class SimpleColorizer : public Colorizer{
 class RecursiveBacktrackerMaker;
 class RecursiveBacktrackerColorizer : public Colorizer {
  public:
-  RecursiveBacktrackerColorizer(std::shared_ptr<RecursiveBacktrackerMaker>);
+  RecursiveBacktrackerColorizer(std::weak_ptr<RecursiveBacktrackerMaker>);
   virtual QColor getColorForCell(const int) const override;
  private:
-  std::shared_ptr<RecursiveBacktrackerMaker> rbm;
+  std::weak_ptr<RecursiveBacktrackerMaker> rbm;
 };
+
+class PrimMaker;
+class PrimColorizer : public Colorizer {
+ public:
+  PrimColorizer(std::weak_ptr<PrimMaker>);
+  virtual QColor getColorForCell(const int) const override;
+ private:
+  mutable QList<QColor> colors;
+  std::weak_ptr<PrimMaker> pm;
+};
+
 
 #endif /* !COLORIZER_H_ */

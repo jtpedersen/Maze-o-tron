@@ -8,6 +8,18 @@
 #include <cassert>
 
 PrimMaker::PrimMaker() {
+}
+
+bool PrimMaker::isDone() const {
+  return idx >= edges.size();
+}
+
+
+int PrimMaker::currentIdx() const {
+  return idx;
+}
+
+void PrimMaker::initGrid() {
   set = Set(grid().size());
   for (int i = 0; i < grid().size(); i++) {
 	auto c = grid().get(i);
@@ -22,18 +34,6 @@ PrimMaker::PrimMaker() {
  
   std::shuffle(edges.begin(), edges.end(), g);
   std::cout << "Shuffled " << edges.size() << " edges"  << "\n";
-}
-
-PrimMaker::~PrimMaker() {
-}
-
-bool PrimMaker::isDone() const {
-  return idx >= edges.size();
-}
-
-
-int PrimMaker::currentIdx() const {
-  return idx;
 }
 
 void PrimMaker::step() {

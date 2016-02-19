@@ -3,6 +3,7 @@
 
 void AbstractMaker::setGrid(const Grid& g) {
   grid_ = g;
+  initGrid();
 }
 
 Grid& AbstractMaker::grid() {
@@ -11,4 +12,8 @@ Grid& AbstractMaker::grid() {
 
 const Grid& AbstractMaker::grid() const {
   return grid_;
+}
+
+void AbstractMaker::initGrid() {
+
 }

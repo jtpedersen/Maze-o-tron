@@ -32,7 +32,7 @@ RecursiveBacktrackerMakerFactory::RecursiveBacktrackerMakerFactory() {
 PrimFactory::PrimFactory() {
   auto raw = std::make_shared<PrimMaker>();
   maker_ = std::shared_ptr<Maker>(raw);
-  colorizer_ = std::make_shared<SimpleColorizer>(maker_);
+  colorizer_ = std::make_shared<PrimColorizer>(raw);
 }
 
 BinTreeFactory::BinTreeFactory() {

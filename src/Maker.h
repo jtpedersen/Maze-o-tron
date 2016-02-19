@@ -30,6 +30,8 @@ public:
   /// return the grid such that it can be rendered
   virtual Grid& grid() override;
   virtual const Grid& grid() const override;
+  /// init stuff for a new grid
+  virtual void initGrid();
 protected:
   Grid grid_;
 };

@@ -8,6 +8,7 @@ class Set {
   int find(int);
   void link(int, int);
   void dump() const;
+  int size() const;
  private:
   std::vector<int> parents;
   std::vector<int> ranks;

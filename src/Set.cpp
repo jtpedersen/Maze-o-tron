@@ -10,6 +10,10 @@ Set::Set(int n) {
   }
 }
 
+int Set::size() const {
+  return parents.size();
+}
+
 int Set::find(int i) {
   assert(i < parents.size());
   if (parents[i] != i)
