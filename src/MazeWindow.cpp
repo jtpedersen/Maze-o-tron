@@ -18,11 +18,9 @@ MazeWindow::MazeWindow() {
 }
 
 void MazeWindow::init() {
-  scene = new QGraphicsScene(this);
-  view = new QGraphicsView(scene);
   algorithmSelector = new QComboBox(this);
-  view->show();
-  setCentralWidget(view);
+  mazeWidget = new MazeWidget(nullptr);
+  setCentralWidget(mazeWidget);
 }
 
 void MazeWindow::createActions() {
@@ -54,7 +52,7 @@ void MazeWindow::createActions() {
   QObject::connect(stepAction, &QAction::triggered, [this] { 
       if(maker && !maker->isDone()) {
 	maker->step();
-	drawMaze(maker->grid());
+	update();
       }});
 
   QObject::connect(playAction, &QAction::triggered, [this] { 
@@ -64,9 +62,10 @@ void MazeWindow::createActions() {
 
 void MazeWindow::tick() {
   if (!maker || maker->isDone()) return;
+  // TODO: mutex
   maker->step();
-  drawMaze(maker->grid());
-  QTimer::singleShot(200, [this] () { this->tick();});
+  update();
+  QTimer::singleShot(20, [this] () { this->tick();});
 }
 
 void MazeWindow::setupToolBar() {
@@ -78,49 +77,18 @@ void MazeWindow::setupToolBar() {
   toolbar->addWidget(algorithmSelector);
 }
 
-void MazeWindow::drawMaze(const Grid& grid) {
-  Q_ASSERT(colorizer);
-  scene->clear();
-  qreal cellSize = 35;
-
-  QPen border(QColor(0,0,0));
-  for(const auto&c :grid.getCells()) {
-    qreal x1 = c.x() * cellSize;
-    qreal y1 = c.y() * cellSize;
-    qreal x2 = x1 + cellSize;
-    qreal y2 = y1 + cellSize;
-
-    auto color = colorizer->getColorForCell(c.idx());
-    QBrush brush(color);
-    QPen pen(color);
-    int rs = cellSize - 2 * border.width();
-    scene->addRect(x1+border.width(),y1+border.width(),rs,rs,pen,brush);
-    
-    if (c.N < 0)
-      scene->addLine(x1,y1, x2,y1, border);
-    if (c.W < 0)
-      scene->addLine(x1,y1, x1,y2, border);
-    if ( ! grid.linked(c.idx(), c.E))
-      scene->addLine(x2,y1, x2,y2, border);
-    if ( ! grid.linked(c.idx(), c.S))
-      scene->addLine(x1,y2, x2,y2, border);
-
-  }
-}
-
-
 void MazeWindow::createMaze() {
   
   auto selected = algorithmSelector->currentText();
   auto factory = MakerFactory::byName(selected);
   
   maker = factory->maker();
-  colorizer = factory->colorizer();
 
   int w,h;
   w = h = dimensionSetter->value();
   maker->setGrid(Grid(w,h));
-
-  drawMaze(maker->grid());
+  mazeWidget->setMaker(maker);
+  mazeWidget->setColorizer(factory->colorizer());
+  update();
 }
 

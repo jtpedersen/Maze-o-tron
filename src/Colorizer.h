@@ -10,6 +10,13 @@ class Colorizer {
   virtual QColor getColorForCell(const int) const = 0;
 };
 
+/// a default just get a color impl
+class UniformColorizer : public Colorizer {
+ public:
+  virtual ~UniformColorizer() = default;
+  virtual QColor getColorForCell(const int) const override;
+};
+
 class Maker;
 class SimpleColorizer : public Colorizer{
  public:

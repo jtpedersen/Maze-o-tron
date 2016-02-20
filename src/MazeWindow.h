@@ -3,6 +3,7 @@
 
 #include "Colorizer.h"
 #include "Maker.h"
+#include "MazeWidget.h"
 
 #include <QtWidgets>
 #include <memory>
@@ -15,8 +16,6 @@ class MazeWindow : public QMainWindow
  public:
   MazeWindow();
 
-  void drawMaze(const Grid& grid);
-
  private:
 
   void init();
@@ -28,8 +27,6 @@ class MazeWindow : public QMainWindow
   //take a step, trigger new step later
   void tick();
   
-  QGraphicsScene *scene = nullptr;
-  QGraphicsView *view = nullptr;
   QToolBar *toolbar = nullptr;
 
   QAction *newMaze = nullptr;
@@ -42,7 +39,8 @@ class MazeWindow : public QMainWindow
   QSpinBox *dimensionSetter = nullptr;
 
   std::shared_ptr<Maker> maker;
-  std::shared_ptr<Colorizer> colorizer;
+
+  MazeWidget *mazeWidget = nullptr;
 };
 
 #endif /* !MAZEWINDOW_H_ */

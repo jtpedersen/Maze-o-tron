@@ -8,9 +8,9 @@ class Maker {
 public:
   virtual ~Maker() = default;
   /// take one step with whe algorithm
-  virtual void step() = 0;
+  virtual void step() =0;
   /// can any mopre steps be taken
-  virtual bool isDone() const = 0;
+  virtual bool isDone() const =0;
   /// Set a grid to work on ( Maker must copy )
   virtual void setGrid(const Grid&) = 0;
   /// return the grid such that it can be rendered
