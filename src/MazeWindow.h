@@ -34,13 +34,16 @@ class MazeWindow : public QMainWindow
   QAction *pauseAction = nullptr;
   QAction *stepAction = nullptr;
   QAction *stopAction = nullptr;
+  
 
+  QLabel *steps = nullptr;
   QComboBox *algorithmSelector = nullptr;
   QSpinBox *dimensionSetter = nullptr;
 
   std::shared_ptr<Maker> maker;
 
   MazeWidget *mazeWidget = nullptr;
+  int stepCount;
 };
 
 #endif /* !MAZEWINDOW_H_ */

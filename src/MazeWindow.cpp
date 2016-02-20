@@ -20,6 +20,7 @@ MazeWindow::MazeWindow() {
 void MazeWindow::init() {
   algorithmSelector = new QComboBox(this);
   mazeWidget = new MazeWidget(nullptr);
+  steps = new QLabel(this);
   setCentralWidget(mazeWidget);
 }
 
@@ -52,7 +53,9 @@ void MazeWindow::createActions() {
   QObject::connect(stepAction, &QAction::triggered, [this] { 
       while(maker && !maker->isDone()) {
 	maker->step();
+	stepCount++;
       }
+      steps->setNum(stepCount);
       mazeWidget->repaint();
     });
 
@@ -63,9 +66,12 @@ void MazeWindow::createActions() {
 
 void MazeWindow::tick() {
   if (!maker || maker->isDone()) return;
-  // TODO: mutex
+  static QMutex mutex;
+  QMutexLocker locker(&mutex);
   maker->step();
   mazeWidget->update();
+  stepCount++;
+  steps->setNum(stepCount);
   QTimer::singleShot(20, [this] () { this->tick();});
 }
 
@@ -76,6 +82,9 @@ void MazeWindow::setupToolBar() {
   toolbar->addAction(stepAction);
   toolbar->addAction(playAction);
   toolbar->addWidget(algorithmSelector);
+  toolbar->addSeparator();
+  toolbar->addWidget(new QLabel("Steps: "));
+  toolbar->addWidget(steps);
 }
 
 void MazeWindow::createMaze() {
@@ -87,6 +96,7 @@ void MazeWindow::createMaze() {
 
   int w,h;
   w = h = dimensionSetter->value();
+  stepCount = 0;
   maker->setGrid(Grid(w,h));
   mazeWidget->setMaker(maker);
   mazeWidget->setColorizer(factory->colorizer());
