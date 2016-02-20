@@ -16,6 +16,8 @@ int Set::size() const {
 
 int Set::find(int i) {
   assert(i < parents.size());
+  // if (parents[i] == i ) return i;
+  // return find(parents[i]);
   if (parents[i] != i)
     parents[i] = find(parents[i]);
   return parents[i];

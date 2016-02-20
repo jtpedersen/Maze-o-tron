@@ -15,10 +15,13 @@ class MazeWidget : public QWidget {
   void setColorizer(std::shared_ptr<Colorizer> colorizer);
  protected:
   virtual void paintEvent(QPaintEvent * event) override;
-
+  virtual void mousePressEvent(QMouseEvent * event) override;
 private:
   std::shared_ptr<Maker> maker_;
   std::shared_ptr<Colorizer> colorizer_;
+  QPoint click;
+  int clickIdx = -1;
+  qreal cellSize = 35;
 };
 
 #endif /* !MAZEWIDGET_H_ */

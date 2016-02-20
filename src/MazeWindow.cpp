@@ -44,16 +44,17 @@ void MazeWindow::createActions() {
 
   dimensionSetter = new QSpinBox(this);
   dimensionSetter->setMinimum(2);
-  dimensionSetter->setMaximum(100);
+  dimensionSetter->setMaximum(200);
   dimensionSetter->setValue(20);
 
   QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
 
   QObject::connect(stepAction, &QAction::triggered, [this] { 
-      if(maker && !maker->isDone()) {
+      while(maker && !maker->isDone()) {
 	maker->step();
-	update();
-      }});
+      }
+      mazeWidget->repaint();
+    });
 
   QObject::connect(playAction, &QAction::triggered, [this] { 
       tick();
@@ -64,7 +65,7 @@ void MazeWindow::tick() {
   if (!maker || maker->isDone()) return;
   // TODO: mutex
   maker->step();
-  update();
+  mazeWidget->update();
   QTimer::singleShot(20, [this] () { this->tick();});
 }
 
@@ -89,6 +90,6 @@ void MazeWindow::createMaze() {
   maker->setGrid(Grid(w,h));
   mazeWidget->setMaker(maker);
   mazeWidget->setColorizer(factory->colorizer());
-  update();
+  mazeWidget->repaint();
 }
 

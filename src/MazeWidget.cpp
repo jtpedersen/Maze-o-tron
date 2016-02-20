@@ -3,6 +3,9 @@
 
 #include <QColor>
 #include <QPainter>
+#include <QDebug>
+#include <QMouseEvent>
+#include <QVector>
 
 
 MazeWidget::MazeWidget(std::shared_ptr<Maker> maker) 
@@ -22,12 +25,17 @@ void MazeWidget::setColorizer(std::shared_ptr<Colorizer> colorizer) {
 }
 
 void MazeWidget::paintEvent(QPaintEvent * event) {
-  if (!maker_) return;
-  const auto& grid = maker_->grid();
-  qreal cellSize = 35;
   QPainter painter(this);
 
-  // background
+  if (!maker_) return;
+  const auto& grid = maker_->grid();
+  
+  const auto vsize = int(window()->height()) / grid.h();
+  const auto hsize = int(window()->width()) / grid.w();
+  
+  cellSize = std::min(hsize, vsize);
+
+  QVector<QLineF> lines;
   for(const auto&c :grid.getCells()) {
     qreal x1 = c.x() * cellSize;
     qreal y1 = c.y() * cellSize;
@@ -35,27 +43,32 @@ void MazeWidget::paintEvent(QPaintEvent * event) {
     qreal y2 = y1 + cellSize;
 
     auto color = colorizer_->getColorForCell(c.idx());
+    if (c.idx() == clickIdx) {
+      color = QColor::fromHsv(30, 200, 200);
+    }
     painter.fillRect(x1,y1,cellSize,cellSize, color);
-  }
   
-  QPen border(QColor(0,0,0));
-  for(const auto&c :grid.getCells()) {
-    qreal x1 = c.x() * cellSize;
-    qreal y1 = c.y() * cellSize;
-    qreal x2 = x1 + cellSize;
-    qreal y2 = y1 + cellSize;
-
     if (c.N < 0)
-      painter.drawLine(x1,y1, x2,y1);
+      lines << QLineF(x1,y1, x2,y1);
     if (c.W < 0)
-      painter.drawLine(x1,y1, x1,y2);
+      lines << QLineF(x1,y1, x1,y2);
     if ( ! grid.linked(c.idx(), c.E))
-      painter.drawLine(x2,y1, x2,y2);
+      lines << QLineF(x2,y1, x2,y2);
     if ( ! grid.linked(c.idx(), c.S))
-      painter.drawLine(x1,y2, x2,y2);
-
+      lines << QLineF(x1,y2, x2,y2);
   }
+  painter.drawLines(lines);
+}
 
-  
+void MazeWidget::mousePressEvent(QMouseEvent * event) {
+  click = event->pos();
+  if(maker_) {
+    const auto& grid = maker_->grid();
+    auto x = floor(click.x()/cellSize);
+    auto y = floor(click.y()/cellSize);
+    clickIdx = y*grid.w() + x;
+    qDebug() << x << ", " << y << " => " << clickIdx;
+  }
+  repaint();
 }
   
