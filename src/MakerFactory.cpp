@@ -9,6 +9,8 @@ std::unique_ptr<MakerFactory> MakerFactory::byName(QString name) {
     return std::make_unique<RecursiveBacktrackerMakerFactory>();
   } else if (name == "Prims") {
     return std::make_unique<PrimFactory>();
+  } else if (name == "Dijkstra") {
+    return std::make_unique<PrimFactory>();
   } else {
     Q_ASSERT(false);
   }
@@ -43,6 +45,12 @@ BinTreeFactory::BinTreeFactory() {
 
 SideWinderFactory::SideWinderFactory() {
   auto raw = std::make_shared<SideWinderMaker>();
+  maker_ = std::shared_ptr<Maker>(raw);
+  colorizer_ = std::make_shared<SimpleColorizer>(maker_);
+}
+
+DijkstraFactory::DijkstraFactory() {
+  auto raw = std::make_shared<UniDijkstra>(0);
   maker_ = std::shared_ptr<Maker>(raw);
   colorizer_ = std::make_shared<SimpleColorizer>(maker_);
 }

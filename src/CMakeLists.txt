@@ -15,6 +15,7 @@ add_library(
   SideWinderMaker.cpp
   RecursiveBacktrackerMaker.cpp
   PrimMaker.cpp
+  UniDijkstra.cpp
   Set.cpp
 )
 

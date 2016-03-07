@@ -26,6 +26,8 @@ class MazeWindow : public QMainWindow
   void createMaze();
   //take a step, trigger new step later
   void tick();
+  //showDijkstra
+  void showDijkstra();
   
   QToolBar *toolbar = nullptr;
 

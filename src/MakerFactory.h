@@ -8,6 +8,7 @@
 #include <BinTreeMaker.h>
 #include <PrimMaker.h>
 #include <SideWinderMaker.h>
+#include <UniDijkstra.h>
 
 #include <memory>
 
@@ -52,6 +53,13 @@ class SideWinderFactory : public AbstractMakerFactory {
   ~SideWinderFactory() = default;
   SideWinderFactory();
 };
+
+class DijkstraFactory : public AbstractMakerFactory {
+ public:
+  ~DijkstraFactory() = default;
+  DijkstraFactory();
+};
+
 
 #endif /* !MAKERFACTORY_H_ */
 

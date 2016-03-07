@@ -38,6 +38,7 @@ void MazeWindow::createActions() {
   stepAction = new QAction(QIcon(":/step"), tr("&Step"), this);
   stepAction->setStatusTip(tr("step construction"));
 
+
   algorithmSelector->addItem(tr("BinaryTree"));
   algorithmSelector->addItem(tr("SideWinder"));
   algorithmSelector->addItem(tr("RecursiveBacktracker"));
@@ -85,6 +86,22 @@ void MazeWindow::setupToolBar() {
   toolbar->addSeparator();
   toolbar->addWidget(new QLabel("Steps: "));
   toolbar->addWidget(steps);
+
+  auto dijkstra = new QAction(tr("&dijkstra"), this);
+  dijkstra->setStatusTip(tr("Dijstra construction"));
+  connect(dijkstra, &QAction::triggered, [this] { showDijkstra();});
+  toolbar->addAction(dijkstra);
+
+}
+
+void MazeWindow::showDijkstra() {
+  auto factory = MakerFactory::byName("dijkstra");
+  auto tmp = factory->maker();
+  tmp->setGrid(maker->grid());
+  mazeWidget->setMaker(tmp);
+  mazeWidget->setColorizer(factory->colorizer());
+  mazeWidget->repaint();
+
 }
 
 void MazeWindow::createMaze() {
