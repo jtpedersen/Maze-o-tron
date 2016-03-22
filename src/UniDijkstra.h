@@ -13,14 +13,13 @@ class UniDijkstra : public AbstractMaker {
   virtual void step() override;
   /// can any mopre steps be taken
   virtual bool isDone() const override;
-
+  virtual void initGrid();
   virtual int currentIdx() const override;
   int dist(int n);
  private:
   std::vector<int> frontier;
-  std::set<int> visited;
+  std::vector<bool> visited;
   std::map<int, int> dists;
-
 };
 
 #endif /* !UNIDIJKSTRA_H_ */
