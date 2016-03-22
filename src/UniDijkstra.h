@@ -15,6 +15,8 @@ class UniDijkstra : public AbstractMaker {
   virtual bool isDone() const override;
 
   virtual int currentIdx() const override;
+
+  int dist(int n);
  private:
   std::set<int> frontier;
   std::set<int> visited;

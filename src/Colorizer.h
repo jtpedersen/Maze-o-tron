@@ -45,5 +45,14 @@ class PrimColorizer : public Colorizer {
   std::weak_ptr<PrimMaker> pm;
 };
 
+class UniDijkstra;
+class DijkstraColorizer : public Colorizer {
+ public:
+  DijkstraColorizer(std::weak_ptr<UniDijkstra>);
+  virtual QColor getColorForCell(const int) const override;
+ private:
+  std::weak_ptr<UniDijkstra> dm;
+};
+
 
 #endif /* !COLORIZER_H_ */

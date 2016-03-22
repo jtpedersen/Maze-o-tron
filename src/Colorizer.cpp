@@ -3,6 +3,9 @@
 #include "Cell.h"
 #include "Set.h"
 #include "PrimMaker.h"
+#include "UniDijkstra.h"
+
+#include <QDebug>
 
 static const QColor current(255,0,0);
 static const QColor done(255,255,255);
@@ -51,6 +54,20 @@ QColor PrimColorizer::getColorForCell(const int idx) const {
       }
     }
     return colors[spt->set.find(idx)];    
+  }
+  return pristine;
+}
+
+
+
+DijkstraColorizer::DijkstraColorizer(std::weak_ptr<UniDijkstra> d) 
+  : dm(d) {
+}
+
+QColor DijkstraColorizer::getColorForCell(const int idx) const {
+  if (auto spt = dm.lock()) {
+    auto d = spt->dist(idx);
+    return  QColor::fromHsv((d*3)%360, 100, 200);
   }
   return pristine;
 }

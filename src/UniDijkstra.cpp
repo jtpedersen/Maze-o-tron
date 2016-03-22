@@ -9,7 +9,9 @@ UniDijkstra::UniDijkstra(int src) {
 void UniDijkstra::step()
 {
   if (isDone()) return;
-  auto next = *select_randomly(begin(frontier), end(frontier));
+  auto it = select_randomly(begin(frontier), end(frontier));
+  auto next = *it;
+  frontier.erase(it);
   visited.emplace(next);
   auto c = grid().get(next);
   std::vector<int> ls { c->N, c->E, c->S, c->W};
@@ -32,3 +34,6 @@ int UniDijkstra::currentIdx() const {
   return 0;
 }
 
+int UniDijkstra::dist(int cell) {
+  return dists[cell];
+}

@@ -10,7 +10,7 @@ std::unique_ptr<MakerFactory> MakerFactory::byName(QString name) {
   } else if (name == "Prims") {
     return std::make_unique<PrimFactory>();
   } else if (name == "Dijkstra") {
-    return std::make_unique<PrimFactory>();
+    return std::make_unique<DijkstraFactory>();
   } else {
     Q_ASSERT(false);
   }
@@ -52,5 +52,5 @@ SideWinderFactory::SideWinderFactory() {
 DijkstraFactory::DijkstraFactory() {
   auto raw = std::make_shared<UniDijkstra>(0);
   maker_ = std::shared_ptr<Maker>(raw);
-  colorizer_ = std::make_shared<SimpleColorizer>(maker_);
+  colorizer_ = std::make_shared<DijkstraColorizer>(raw);
 }

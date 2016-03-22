@@ -95,13 +95,14 @@ void MazeWindow::setupToolBar() {
 }
 
 void MazeWindow::showDijkstra() {
-  auto factory = MakerFactory::byName("dijkstra");
+  auto factory = MakerFactory::byName("Dijkstra");
   auto tmp = factory->maker();
   tmp->setGrid(maker->grid());
+  while( !tmp->isDone()) tmp->step();
+
   mazeWidget->setMaker(tmp);
   mazeWidget->setColorizer(factory->colorizer());
   mazeWidget->repaint();
-
 }
 
 void MazeWindow::createMaze() {
