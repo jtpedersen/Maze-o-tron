@@ -71,4 +71,8 @@ void MazeWidget::mousePressEvent(QMouseEvent * event) {
   }
   repaint();
 }
+
+int MazeWidget::getClicked() {
+  return clickIdx;
+}
   

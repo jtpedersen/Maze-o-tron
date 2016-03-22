@@ -58,16 +58,14 @@ QColor PrimColorizer::getColorForCell(const int idx) const {
   return pristine;
 }
 
-
-
 DijkstraColorizer::DijkstraColorizer(std::weak_ptr<UniDijkstra> d) 
   : dm(d) {
 }
 
 QColor DijkstraColorizer::getColorForCell(const int idx) const {
   if (auto spt = dm.lock()) {
-    auto d = spt->dist(idx);
-    return  QColor::fromHsv((d*3)%360, 100, 200);
+    auto d = static_cast<int>(spt->dist(idx) * .5);
+    return  QColor::fromHsv((d)%360, 100, 200);
   }
   return pristine;
 }

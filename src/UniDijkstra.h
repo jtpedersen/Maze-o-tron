@@ -7,7 +7,7 @@
  */
 class UniDijkstra : public AbstractMaker {
  public:
-  explicit UniDijkstra(int source);
+  explicit UniDijkstra(int src);
   virtual ~UniDijkstra() = default;
   /// take one step with whe algorithm
   virtual void step() override;
@@ -15,10 +15,9 @@ class UniDijkstra : public AbstractMaker {
   virtual bool isDone() const override;
 
   virtual int currentIdx() const override;
-
   int dist(int n);
  private:
-  std::set<int> frontier;
+  std::vector<int> frontier;
   std::set<int> visited;
   std::map<int, int> dists;
 

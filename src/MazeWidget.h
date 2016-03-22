@@ -13,6 +13,7 @@ class MazeWidget : public QWidget {
   MazeWidget(std::shared_ptr<Maker> maker);
   void setMaker(std::shared_ptr<Maker> maker);
   void setColorizer(std::shared_ptr<Colorizer> colorizer);
+  int getClicked();
  protected:
   virtual void paintEvent(QPaintEvent * event) override;
   virtual void mousePressEvent(QMouseEvent * event) override;

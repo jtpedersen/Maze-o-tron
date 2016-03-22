@@ -1,6 +1,8 @@
 #include "MazeWindow.h"
 #include "Colorizer.h"
 
+#include "UniDijkstra.h"
+
 #include <Grid.h>
 #include <Cell.h>
 #include <util.h>
@@ -9,6 +11,9 @@
 
 #include <iterator>
 #include <iostream>
+#include <chrono>
+
+using Clock = std::chrono::high_resolution_clock;
 
 MazeWindow::MazeWindow() {
   init();
@@ -95,13 +100,18 @@ void MazeWindow::setupToolBar() {
 }
 
 void MazeWindow::showDijkstra() {
-  auto factory = MakerFactory::byName("Dijkstra");
-  auto tmp = factory->maker();
+  auto tmp = std::make_shared<UniDijkstra>(std::max(0, mazeWidget->getClicked()));
+  auto colorizer = std::make_shared<DijkstraColorizer>(tmp);
+
   tmp->setGrid(maker->grid());
+
+  auto start = Clock::now();
   while( !tmp->isDone()) tmp->step();
+  auto dur = Clock::now() - start;
+  std::cout << "It took " << std::chrono::duration_cast< std::chrono::milliseconds >(dur).count() << "ms" << std::endl;
 
   mazeWidget->setMaker(tmp);
-  mazeWidget->setColorizer(factory->colorizer());
+  mazeWidget->setColorizer(colorizer);
   mazeWidget->repaint();
 }
 
