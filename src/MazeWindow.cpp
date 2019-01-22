@@ -3,15 +3,15 @@
 
 #include "UniDijkstra.h"
 
-#include <Grid.h>
 #include <Cell.h>
+#include <Grid.h>
 #include <util.h>
 
 #include "MakerFactory.h"
 
-#include <iterator>
-#include <iostream>
 #include <chrono>
+#include <iostream>
+#include <iterator>
 
 using Clock = std::chrono::high_resolution_clock;
 
@@ -19,7 +19,7 @@ MazeWindow::MazeWindow() {
   init();
   createActions();
   setupToolBar();
-  resize(1000,800);
+  resize(900, 800);
 }
 
 void MazeWindow::init() {
@@ -43,7 +43,6 @@ void MazeWindow::createActions() {
   stepAction = new QAction(QIcon(":/step"), tr("&Step"), this);
   stepAction->setStatusTip(tr("step construction"));
 
-
   algorithmSelector->addItem(tr("BinaryTree"));
   algorithmSelector->addItem(tr("SideWinder"));
   algorithmSelector->addItem(tr("RecursiveBacktracker"));
@@ -51,34 +50,34 @@ void MazeWindow::createActions() {
 
   dimensionSetter = new QSpinBox(this);
   dimensionSetter->setMinimum(2);
-  dimensionSetter->setMaximum(200);
+  dimensionSetter->setMaximum(1000);
   dimensionSetter->setValue(20);
 
-  QObject::connect(newMaze, &QAction::triggered, [this] { this->createMaze();});
+  QObject::connect(newMaze, &QAction::triggered,
+                   [this] { this->createMaze(); });
 
-  QObject::connect(stepAction, &QAction::triggered, [this] { 
-      while(maker && !maker->isDone()) {
-	maker->step();
-	stepCount++;
-      }
-      steps->setNum(stepCount);
-      mazeWidget->repaint();
-    });
+  QObject::connect(stepAction, &QAction::triggered, [this] {
+    while (maker && !maker->isDone()) {
+      maker->step();
+      stepCount++;
+    }
+    steps->setNum(stepCount);
+    mazeWidget->repaint();
+  });
 
-  QObject::connect(playAction, &QAction::triggered, [this] { 
-      tick();
-    });
+  QObject::connect(playAction, &QAction::triggered, [this] { tick(); });
 }
 
 void MazeWindow::tick() {
-  if (!maker || maker->isDone()) return;
+  if (!maker || maker->isDone())
+    return;
   static QMutex mutex;
   QMutexLocker locker(&mutex);
   maker->step();
   mazeWidget->update();
   stepCount++;
   steps->setNum(stepCount);
-  QTimer::singleShot(20, [this] () { this->tick();});
+  QTimer::singleShot(20, [this]() { this->tick(); });
 }
 
 void MazeWindow::setupToolBar() {
@@ -94,21 +93,25 @@ void MazeWindow::setupToolBar() {
 
   auto dijkstra = new QAction(tr("&dijkstra"), this);
   dijkstra->setStatusTip(tr("Dijstra construction"));
-  connect(dijkstra, &QAction::triggered, [this] { showDijkstra();});
+  connect(dijkstra, &QAction::triggered, [this] { showDijkstra(); });
   toolbar->addAction(dijkstra);
-
 }
 
 void MazeWindow::showDijkstra() {
-  auto tmp = std::make_shared<UniDijkstra>(std::max(0, mazeWidget->getClicked()));
+  auto tmp =
+      std::make_shared<UniDijkstra>(std::max(0, mazeWidget->getClicked()));
   auto colorizer = std::make_shared<DijkstraColorizer>(tmp);
 
   tmp->setGrid(maker->grid());
 
   auto start = Clock::now();
-  while( !tmp->isDone()) tmp->step();
+  while (!tmp->isDone())
+    tmp->step();
   auto dur = Clock::now() - start;
-  std::cout << "It took " << std::chrono::duration_cast< std::chrono::milliseconds >(dur).count() << "ms" << std::endl;
+  std::cout
+      << "It took "
+      << std::chrono::duration_cast<std::chrono::milliseconds>(dur).count()
+      << "ms" << std::endl;
 
   mazeWidget->setMaker(tmp);
   mazeWidget->setColorizer(colorizer);
@@ -116,18 +119,17 @@ void MazeWindow::showDijkstra() {
 }
 
 void MazeWindow::createMaze() {
-  
+
   auto selected = algorithmSelector->currentText();
   auto factory = MakerFactory::byName(selected);
-  
+
   maker = factory->maker();
 
-  int w,h;
+  int w, h;
   w = h = dimensionSetter->value();
   stepCount = 0;
-  maker->setGrid(Grid(w,h));
+  maker->setGrid(Grid(w, h));
   mazeWidget->setMaker(maker);
   mazeWidget->setColorizer(factory->colorizer());
   mazeWidget->repaint();
 }
-

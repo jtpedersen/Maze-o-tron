@@ -16,10 +16,7 @@ std::unique_ptr<MakerFactory> MakerFactory::byName(QString name) {
   }
 }
 
-
-std::shared_ptr<Maker> AbstractMakerFactory::maker() {
-  return maker_; 
-}
+std::shared_ptr<Maker> AbstractMakerFactory::maker() { return maker_; }
 
 std::shared_ptr<Colorizer> AbstractMakerFactory::colorizer() {
   return colorizer_;
